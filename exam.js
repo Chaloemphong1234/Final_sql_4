@@ -22,7 +22,7 @@ let timerInterval;
 let alert30Shown = false;   // ตัวแปรเช็คการแจ้งเตือน 30 นาที
 
 // เวลาเริ่มสอบ (ตั้งค่าตามเดิมที่คุณส่งมา)
-const EXAM_START_TIME = new Date(2026, 0, 27, 15, 34, 0);
+const EXAM_START_TIME = new Date(2026, 0, 27, 15, 59, 0);
 
 /* ================== CUSTOM POPUP SYSTEM ================== */
 function showModal(title, message, icon = '⚠️', callback = null) {
