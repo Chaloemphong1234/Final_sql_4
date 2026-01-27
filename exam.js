@@ -3,22 +3,26 @@ let students = {}
 let answers = {}
 
 // *** URL ของ Google Apps Script ***
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypocB-XC7vjRAd75cw_p2lC7KJQdwXpjou7mPjVZ3OVZngrYMnIqtuqwbh8vo8FWmR/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBxub0pQNzcvBcknMDKuscTXI8Q-i03LyJrTXfXHg3IQDoxPYNkZ15LRNod4bUGuPB/exec"; 
 
+// เฉลย 60 ข้อ (สลับใหม่เรียบร้อย)
 const correctAnswers = {
-  1: "ก", 2: "ข", 3: "ก", 4: "ค", 5: "ง", 6: "ก", 7: "ก", 8: "ค", 9: "ก", 10: "ก",
-  11: "ข", 12: "ข", 13: "ง", 14: "ก", 15: "ข", 16: "ก", 17: "ง", 18: "ก", 19: "ง", 20: "ข",
-  21: "ข", 22: "ข", 23: "ง", 24: "ค", 25: "ก", 26: "ค", 27: "ข", 28: "ข", 29: "ง", 30: "ค",
-  31: "ข", 32: "ค", 33: "ง", 34: "ก", 35: "ข", 36: "ค", 37: "ก", 38: "ค", 39: "ข", 40: "ก",
-  41: "ง", 42: "ข", 43: "ข", 44: "ก", 45: "ง", 46: "ก", 47: "ข", 48: "ข", 49: "ง", 50: "ค"
-}
+  1: "ก", 2: "ข", 3: "ก", 4: "ง", 5: "ง", 6: "ข", 7: "ค", 8: "ก", 9: "ข", 10: "ง",
+  11: "ก", 12: "ค", 13: "ข", 14: "ก", 15: "ง", 16: "ข", 17: "ค", 18: "ก", 19: "ข", 20: "ง",
+  21: "ก", 22: "ค", 23: "ก", 24: "ข", 25: "ง", 26: "ข", 27: "ก", 28: "ค", 29: "ข", 30: "ง",
+  31: "ก", 32: "ข", 33: "ค", 34: "ง", 35: "ก", 36: "ค", 37: "ข", 38: "ง", 39: "ก", 40: "ข",
+  41: "ค", 42: "ง", 43: "ก", 44: "ข", 45: "ค", 46: "ง", 47: "ก", 48: "ข", 49: "ค", 50: "ง",
+  51: "ก", 52: "ข", 53: "ค", 54: "ง", 55: "ก", 56: "ข", 57: "ค", 58: "ง", 59: "ก", 60: "ข"
+};
 
-const TOTAL_QUESTIONS = 50 
-const PASS_SCORE = 25      
-let timeLeft = 60 * 60     
-let timerInterval
+const TOTAL_QUESTIONS = 60; 
+const PASS_SCORE = 30;      
+let timeLeft = 1.5 * 60;     // 90 นาที
+let timerInterval;
+let alert30Shown = false;   // ตัวแปรเช็คการแจ้งเตือน 30 นาที
 
-const EXAM_START_TIME = new Date(2026, 0, 26, 19, 45, 0);
+// เวลาเริ่มสอบ (ตั้งค่าตามเดิมที่คุณส่งมา)
+const EXAM_START_TIME = new Date(2026, 0, 27, 15, 34, 0);
 
 /* ================== CUSTOM POPUP SYSTEM ================== */
 function showModal(title, message, icon = '⚠️', callback = null) {
@@ -30,7 +34,7 @@ function showModal(title, message, icon = '⚠️', callback = null) {
           <div class="modal-icon" id="modalIcon"></div>
           <h2 id="modalTitle" style="margin:0 0 10px 0;"></h2>
           <p id="modalMsg" style="margin-bottom:25px; line-height:1.6;"></p>
-          <button class="btn-login" id="modalBtn">ตกลง</button>
+          <button class="btn-login" id="modalBtn" style="padding: 10px 30px; cursor: pointer;">ตกลง</button>
         </div>
       </div>`;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -88,16 +92,24 @@ function checkStudent(){
   localStorage.setItem("sid", id)
   localStorage.setItem("sname", students[id])
   
-  // บังคับเต็มจอก่อนเข้าหน้าสอบ
-  const elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen().then(() => location.href = "exam.html");
-  } else {
-    location.href = "exam.html";
-  }
+  // เข้าหน้าสอบทันที (ตัดการบังคับ Full Screen ออก)
+  location.href = "exam.html";
 }
 
-/* ================== EXAM PAGE ================== */
+// ฟังก์ชันปุ่มตัวเลขหน้า Login
+function pressNum(val) {
+  const input = document.getElementById('sid');
+  if (val === 'del') {
+    input.value = input.value.slice(0, -1);
+  } else if (val === 'clr') {
+    input.value = '';
+  } else {
+    if (input.value.length < 15) input.value += val;
+  }
+  if (typeof updateVisual === 'function') updateVisual();
+}
+
+/* ================== EXAM PAGE INITIALIZE ================== */
 if(location.pathname.includes("exam.html")){
   const sname = localStorage.getItem("sname")
   if(!sname) {
@@ -105,7 +117,7 @@ if(location.pathname.includes("exam.html")){
   } else {
       document.getElementById("studentName").innerText = "ผู้รับการทดสอบ : " + sname
       initSecurity()
-      checkExamTimeStatus() 
+      checkExamTimeStatus() // ระบบตรวจสอบเวลาเริ่มสอบ
   }
 }
 
@@ -135,21 +147,44 @@ function checkExamTimeStatus() {
       if(wm) wm.remove();
       if(examContainer) {
         examContainer.style.display = "flex";
-        startTimer();
+        startTimer(); // ถึงเวลาเริ่มสอบแล้ว ค่อยเริ่มตัวนับเวลา 90 นาที
       }
     }
   }, 1000);
 }
 
-/* ================== TIMER ================== */
+
+
+/* ================== TIMER SYSTEM ================== */
 function startTimer(){
   updateTimer()
   timerInterval = setInterval(()=>{
     timeLeft--
     updateTimer()
+
+    // แจ้งเตือนเมื่อเหลือ 30 นาที (1800 วินาที)
+    if (timeLeft === 1800 && !alert30Shown) {
+      alert30Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 30 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
+    }
+
+    if (timeLeft === 600 && !alert30Shown) {
+      alert30Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 10 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
+    }
+
+    if (timeLeft === 300 && !alert30Shown) {
+      alert30Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 5 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
+    }
+    if (timeLeft === 60 && !alert30Shown) {
+      alert30Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 1 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
+    }
+
     if(timeLeft <= 0){
       clearInterval(timerInterval)
-      submitExam(true)
+      submitExam(true) // หมดเวลา -> เก็บกระดาษคำตอบอัตโนมัติ
     }
   },1000)
 }
@@ -164,48 +199,29 @@ function updateTimer(){
   }
 }
 
-/* ================== ANSWER ================== */
+/* ================== ANSWER LOGIC ================== */
 function mark(q, a, btn){
   answers[q] = a
   const parent = btn.parentElement;
   parent.querySelectorAll("button").forEach(b => b.classList.remove("active"))
   btn.classList.add("active")
-}
-
-/* ================== SUBMIT ================== */
-function submitExam(auto){
-  if(!auto && Object.keys(answers).length < TOTAL_QUESTIONS){
-    return showModal("ทำข้อสอบยังไม่ครบ!", `กรุณาทำให้ครบทั้ง ${TOTAL_QUESTIONS} ข้อ`, "📝");
-  }
-  window.onbeforeunload = null
-  localStorage.setItem("userAnswers", JSON.stringify(answers))
-  location.href = "processing.html"
-}
-
-function submitExam(auto){
-  // 1. ถ้าไม่ได้ทำครบทุกข้อ และไม่ใช่การส่งแบบ Auto (หมดเวลา/ทุจริต) ให้เตือนก่อน
-  if(!auto && Object.keys(answers).length < TOTAL_QUESTIONS){
-    return showModal("ทำข้อสอบยังไม่ครบ!", `กรุณาทำให้ครบทั้ง ${TOTAL_QUESTIONS} ข้อ`, "📝");
-  }
-
-  // 2. ถ้าเป็นการส่งแบบปกติ (กดปุ่มส่งเอง) ให้ขึ้น Popup ยืนยัน
-  if(!auto) {
-    showModal("ยืนยันการส่ง", "คุณมั่นใจหรือไม่ที่จะส่งข้อสอบ เมื่อส่งแล้วจะไม่สามารถกลับมาแก้ไขได้", "❓", () => {
-      executeSubmit();
-    });
-  } else {
-    // 3. ถ้าเป็นแบบ Auto (ทุจริต/หมดเวลา) ให้ส่งทันที
-    executeSubmit();
-  }
-}
-
-// ฟังก์ชันภายในสำหรับจัดการเรื่องย้ายหน้าและล้างค่าป้องกันการกดย้อนกลับ
-function executeSubmit() {
-  window.onbeforeunload = null; // ปิดตัวเตือนตอนปิด Browser
+  
+  // เก็บคำตอบลง Storage ทันทีเพื่อป้องกันข้อมูลหาย
   localStorage.setItem("userAnswers", JSON.stringify(answers));
+}
+
+
+/* ================== SUBMIT LOGIC (Auto only) ================== */
+function submitExam(auto){
+  // ล็อกการแจ้งเตือนหน้าต่างปิด
+  window.onbeforeunload = null;
+  localStorage.setItem("userAnswers", JSON.stringify(answers));
+  
+  // บังคับย้ายไปหน้าประมวลผลทันทีเมื่อหมดเวลา
   location.href = "processing.html";
 }
-/* ================== SECURITY ================== */
+
+/* ================== SECURITY (คงเดิม) ================== */
 function initSecurity(){
   window.onbeforeunload = () => "คุณกำลังทำข้อสอบอยู่"
   
@@ -214,20 +230,7 @@ function initSecurity(){
     if(document.hidden) submitExam(true);
   })
 
-  // 2. ตรวจจับการย่อขนาดหน้าจอ (Restore Down)
-  window.addEventListener('resize', () => {
-    if (window.outerWidth < (screen.width - 50) || window.outerHeight < (screen.height - 50)) {
-       submitExam(true);
-    }
-  });
-
-  // 3. ตรวจจับการออกจาก Fullscreen
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
-       submitExam(true);
-    }
-  });
-
+  // 2. ป้องกันคลิกขวาและปุ่มลัด
   document.addEventListener("contextmenu", e => e.preventDefault())
   document.addEventListener("keydown", (e) => {
       if(e.ctrlKey || e.metaKey || e.altKey || e.key.startsWith('F')) {
@@ -251,7 +254,6 @@ if(location.pathname.includes("result.html")){
       localStorage.setItem("dataSent", "true");
   }
 
-  // เปลี่ยนสีพื้นหลังเป็นสีเขียวอ่อนเพื่อให้ครูเห็นว่าส่งแล้ว
   document.body.style.background = "#e8f5e9";
 
   const resultBox = document.getElementById("resultBox");
@@ -262,19 +264,16 @@ if(location.pathname.includes("result.html")){
         <h2 style="color:var(--primary); font-size: 2.2rem;">ส่งคำตอบสำเร็จ!</h2>
         <hr style="border:1px solid #ddd; margin:20px 0;">
         <p style="font-size:1.3rem;">นักศึกษา: <b>${localStorage.getItem("sname")}</b></p>
-        <p style="color: #d32f2f; font-weight: bold; font-size: 1.2rem; margin: 20px 0;">
-          ระบบได้บันทึกคำตอบและผลคะแนนสอบแล้ว
-        </p>
-        <div style="background: #fff; border: 2px dashed #388e3c; padding: 20px; border-radius: 15px; display: inline-block;">
+        
+        <div style="background: #fff; border: 2px dashed #388e3c; padding: 20px; border-radius: 15px; display: inline-block; margin-top:20px;">
            <p style="margin: 0; font-size: 1.1rem; color: #2e7d32;">
-             <b>กรุณานั่งรอในความสงบ</b><br>
-             รอคำสั่งจากอาจารย์เพื่ออนุญาตให้เลิกแถวหรือกลับบ้าน
+             <b>ระบบได้บันทึกคะแนนลงฐานข้อมูลเรียบร้อยแล้ว</b><br>
+             กรุณานั่งรอคำสั่งจากอาจารย์
            </p>
         </div>
       </div>`
   }
 
-  // ป้องกันการกดย้อนกลับ (Anti-Back)
   history.pushState(null, null, location.href);
   window.onpopstate = function () {
       history.go(1);

@@ -2,9 +2,13 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ระบบสอบออนไลน์คณิตศาสตร์คอมพิวเตอร์</title>
+<title>ระบบสอบออนไลน์วิชาระบบฐานข้อมูลและการประยุกต์</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
+<style>
+
+</style>
 <body>
 
 <div class="topbar">
@@ -17,7 +21,7 @@
   </div>
   <div style="text-align:right;">
     <div id="studentName" style="font-weight:bold;">กำลังโหลดข้อมูล...</div>
-    <div id="timer" style="font-size:1.8rem; font-weight:bold; color:var(--accent);">60:00</div>
+    <div id="timer" style="font-size:1.8rem; font-weight:bold; color:var(--accent);">90:00</div>
   </div>
 </div>
 
@@ -27,1035 +31,988 @@
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      1. กำหนดให้มีตาราง student(student_id, name, class) และต้องการสร้างตาราง score <br>
-      เพื่อเก็บคะแนนโดยให้ student_id เป็น Foreign Key อ้างอิงไปยังตาราง student <br>
-      และไม่อนุญาตให้มีค่าซ้ำใน student_id ของตาราง score ข้อใดเขียนคำสั่ง SQL ได้เหมาะสมที่สุด
+      1. บริษัทประกันภัยข้ามชาติแห่งหนึ่งเก็บข้อมูลลูกค้าแยกตามประเภทกรมธรรม์ (ชีวิต, รถยนต์, สุขภาพ)<br>
+      ในรูปแบบแฟ้มข้อมูล (File Processing System) โดยแต่ละแผนกพัฒนาแอปพลิเคชันขึ้นมาใช้งานเอง<br>
+      ต่อมาพบว่าเมื่อลูกค้าย้ายที่อยู่ ฝ่ายประกันชีวิตแก้ไขข้อมูลแล้ว แต่ฝ่ายรถยนต์ยังคงส่งไปที่อยู่เดิม<br>
+      นอกจากนี้ระบบยังไม่รองรับการพ่วงสัญญาข้ามแผนก เพราะโครงสร้างข้อมูลถูกกำหนดไว้ในโปรแกรม<br>
+      หากพิจารณาตามหลัก Data Independence ปัญหาด้านโครงสร้างนี้ส่งผลกระทบที่รุนแรงที่สุดในด้านใด
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ใช้ PRIMARY KEY ที่ student_id และกำหนด FOREIGN KEY อ้างอิง student(student_id)</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ใช้ UNIQUE ที่ student_id และกำหนด FOREIGN KEY โดยไม่ต้องอ้างอิงตารางต้นทาง</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ใช้ PRIMARY KEY แบบหลายคอลัมน์ร่วมกับ score</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ใช้ FOREIGN KEY เพียงอย่างเดียวโดยไม่กำหนดข้อจำกัดอื่น</p>
+      <p style="margin: 0; line-height: 1.4;">ก. ความยากลำบากในการแก้ไขโครงสร้างข้อมูล (Structural Dependency)</p>
+      <p style="margin: 0; line-height: 1.4;">ข. การละเมิดกฎความปลอดภัยของข้อมูล (Security Violation)</p>
+      <p style="margin: 0; line-height: 1.4;">ค. การเกิดความซ้ำซ้อนของข้อมูลที่ควบคุมไม่ได้ (Uncontrolled Redundancy)</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ข้อจำกัดด้านความจุของอุปกรณ์จัดเก็บข้อมูล (Storage Limitation)</p>
     </div>
   </div>
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      2. จากตาราง orders(order_id, customer_id, order_date) และ customers(customer_id, name) <br>
-       หากต้องการแสดงรายชื่อ ลูกค้าที่ “ยังไม่เคยมีการสั่งซื้อเลย” คำสั่งใดเหมาะสมที่สุด <br>
-      
+      2. ในระบบฐานข้อมูลธนาคารที่รองรับธุรกรรมพร้อมกันหลายหมื่นรายการต่อวินาที DBMS<br>
+      ต้องทำหน้าที่เป็นตัวกลางที่สำคัญยิ่ง สมมติว่าในจังหวะที่ระบบกำลังหักเงินจากบัญชีต้นทาง<br>
+      เพื่อโอนไปยังปลายทาง แล้วเกิดไฟฟ้าขัดข้องทำให้เครื่องเซิร์ฟเวอร์หยุดทำงานลงทันที<br>
+      หน้าที่ใดของ DBMS ที่ถูกออกแบบมาเพื่อจัดการความสมบูรณ์ของข้อมูลในสภาวะวิกฤต<br>
+      เพื่อให้ 'ยอดเงินไม่หายและไม่เพิ่มขึ้นผิดปกติ' จากเหตุการณ์ขัดข้องดังกล่าว
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ใช้ INNER JOIN และตรวจสอบ order_id IS NULL</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ใช้ LEFT JOIN แล้วเลือกแถวที่ orders.order_id IS NULL</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ใช้ RIGHT JOIN และ GROUP BY customer_id</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ใช้ JOIN ธรรมดาแล้วใช้ HAVING COUNT(order_id) = 0</p>
+      <p style="margin: 0; line-height: 1.4;">ก. การสร้างมุมมองข้อมูลที่แตกต่างกันสำหรับผู้ใช้ (Data View Management)</p>
+      <p style="margin: 0; line-height: 1.4;">ข. การควบคุมความถูกต้องและความปลอดภัย (Integrity and Security Control)</p>
+      <p style="margin: 0; line-height: 1.4;">ค. การทำหน้าที่เป็นอิสระจากส่วนของฮาร์ดแวร์ (Hardware Independence)</p>
+      <p style="margin: 0; line-height: 1.4;">ง. การลดความซ้ำซ้อนของข้อมูล (Redundancy Reduction)</p>
     </div>
   </div>
 
     <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      3. กำหนดให้มีตาราง student(student_id, name, class) และ score(score_id, student_id, score)<br>
-ผู้สอนต้องการแสดง รายชื่อนักศึกษาที่มีข้อมูลคะแนนอย่างน้อย 1 รายการ
-โดยยอมรับได้ว่าหากนักศึกษาคนเดียวมีหลายคะแนน อาจแสดงชื่อซ้ำ
-แต่ต้องแน่ใจว่าผลลัพธ์จะไม่รวมชื่อนักศึกษาที่ไม่มีข้อมูลคะแนน
-และไม่ต้องการให้คำสั่งผิดพลาดจากค่า NULL ในตาราง score 
-      
+      3. มหาวิทยาลัยแห่งหนึ่งใช้งานระบบฐานข้อมูลกลาง (Centralized Database) หากผู้ดูแลระบบ<br>
+      ตัดสินใจเปลี่ยนโครงสร้างการเก็บ 'รหัสนิสิต' จากตัวเลข 8 หลัก เป็นตัวอักษรผสมเลข 10 หลัก<br>
+      เพื่อรองรับการขยายตัว หากระบบนี้มีประสิทธิภาพตามหลักการของฐานข้อมูลที่ถูกต้อง<br>
+      ข้อใดคือผลกระทบที่ควรจะเกิดขึ้นกับ 'โปรแกรมลงทะเบียน' ที่นิสิตใช้งานอยู่ในปัจจุบัน
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. SELECT student.name<br>FROM student<br>JOIN score ON student.student_id = score.student_id;</p>
-      <p style="margin: 0; line-height: 1.4;">ข. SELECT name<br>FROM student<br>JOIN score ON student.student_id = score.student_id;</p>
-      <p style="margin: 0; line-height: 1.4;">ค. SELECT name<br>FROM student<br>WHERE student_id = (SELECT student_id FROM score);</p>
-      <p style="margin: 0; line-height: 1.4;">ง. SELECT student.name<br>FROM student<br>LEFT JOIN score ON student.student_id = score.student_id;</p>
+      <p style="margin: 0; line-height: 1.4;">ก. โปรแกรมไม่ต้องถูกแก้ไขโค้ดเนื่องจากมีความเป็นอิสระทางตรรกะ (Logical Data Independence)</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ความเร็วในการประมวลผลจะลดลงกึ่งหนึ่งเนื่องจากจำนวนบิตในระดับ Hardware เพิ่มขึ้น</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ต้องทำการเขียนโปรแกรมลงทะเบียนขึ้นใหม่ทั้งหมดเนื่องจากชนิดข้อมูล (Data Type) เปลี่ยนไป</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ข้อมูลเดิมที่เป็นตัวเลข 8 หลักจะถูกลบทิ้งโดยอัตโนมัติเพราะไม่ตรงกับโครงสร้างใหม่</p>
     </div>
   </div>
 
     <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      4. นักเรียนคนหนึ่งเขียนเงื่อนไข SQL ว่า
-“เลือกข้อมูลที่อยู่ระหว่าง 80 ถึง 60”
-โดยไม่ได้ตรวจสอบลำดับของค่าเริ่มต้นและค่าสิ้นสุด
-ผลลัพธ์ที่เกิดขึ้นในหลายระบบฐานข้อมูลเป็นไปได้มากที่สุดคือข้อใด
+      4. ในการออกแบบระบบฐานข้อมูลโรงพยาบาล 'นายแพทย์วิชัย' ต้องการดูประวัติรักษาในรูปแบบกราฟ<br>
+      ขณะที่ 'เจ้าหน้าที่การเงิน' ต้องการดูเฉพาะรายการค่าใช้จ่ายเพื่อออกใบเสร็จรับเงินให้แก่คนไข้<br>
+      องค์ประกอบด้านบุคลากรในข้อใดที่มีหน้าที่ออกแบบและกำหนด 'มุมมอง (View)' ที่แตกต่างกัน<br>
+      เพื่อให้ทั้งสองฝ่ายเข้าถึงข้อมูลได้อย่างเหมาะสมและปลอดภัยตามขอบเขตงานของตนเอง
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ระบบจะสลับค่าให้อัตโนมัติเพื่อความถูกต้อง</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ได้ผลลัพธ์เหมือนกับการเลือกช่วง 60 ถึง 80</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ไม่ได้ข้อมูลใดเลยแม้ข้อมูลจะอยู่ในช่วงนั้น</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ระบบเกิดข้อผิดพลาดและไม่สามารถประมวลผลได้</p>
+      <p style="margin: 0; line-height: 1.4;">ก. ผู้ใช้ระดับสูง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. โปรแกรมเมอร์</p>
+      <p style="margin: 0; line-height: 1.4;">ค. พนักงานบันทึกข้อมูล</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ผู้จัดการฐานข้อมูล</p>
     </div>
   </div>
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      5. จากตาราง product(product_id, price)
-ผู้ดูแลระบบต้องการแสดงสินค้าที่
-มีราคาอยู่นอกช่วง 100 ถึง 500
-และต้องการให้เงื่อนไขอ่านแล้วเข้าใจทันทีว่ากำลัง “ตัดช่วงราคาออก”
-แนวทางใดเหมาะสมที่สุด
+      5. ข้อมูลในคอมพิวเตอร์ถูกเก็บเป็นเลขฐานสอง (Bit) โดย 8 บิต รวมเป็น 1 ไบต์ (แทน 1 ตัวอักษร)<br>
+      และเมื่อนำตัวอักษรหลายตัวมาต่อกันจะกลายเป็นฟิลด์ หากระบบต้องการเก็บคำว่า 'DATABASE'<br>
+      ซึ่งมีทั้งหมด 8 ตัวอักษร จะต้องใช้หน่วยความจำกี่บิต และคำนี้จัดเป็นหน่วยข้อมูลในระดับใด<br>
+      ตามลำดับชั้นการจัดเก็บข้อมูล (Data Hierarchy) ที่กำหนดไว้ข้างต้น
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ใช้เงื่อนไขราคาน้อยกว่า 100 และมากกว่า 500 พร้อมกัน</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ใช้ BETWEEN 100 OR 500</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ใช้ OR เชื่อมราคาน้อยกว่า 100 กับมากกว่า 500</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ใช้ NOT BETWEEN 100 AND 500</p>
+      <p style="margin: 0; line-height: 1.4;">ก. 64 บิต และจัดเป็นระดับ Byte</p>
+      <p style="margin: 0; line-height: 1.4;">ข. 8 บิต และจัดเป็นระดับ Record</p>
+      <p style="margin: 0; line-height: 1.4;">ค. 512 บิต และจัดเป็นระดับ File</p>
+      <p style="margin: 0; line-height: 1.4;">ง. 64 บิต และจัดเป็นระดับ Field</p>
     </div>
   </div>
 
     <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      6. โรงเรียนแห่งหนึ่งจัดเก็บข้อมูลนักเรียนไว้ในตารางชื่อ student โดยมีฟิลด์ รหัสนักเรียน ชื่อ ชั้นเรียน และคะแนนสอบกลางภาค ครูต้องการแสดงรายชื่อนักเรียนทั้งหมดที่มีคะแนนสอบมากกว่าหรือเท่ากับ 60 คะแนน และเรียงข้อมูลตามคะแนนจากมากไปน้อย คำสั่งใดเหมาะสมที่สุด
+      6. เจ้าหน้าที่บริษัทบ่นว่า 'เมื่อเราต้องการเปลี่ยนลำดับการเก็บข้อมูลจาก ชื่อ-นามสกุล เป็น<br>
+      นามสกุล-ชื่อ เราต้องแจ้งให้โปรแกรมเมอร์มาแก้ไขโปรแกรมทุกตัวที่เรียกใช้งานไฟล์นี้'<br>
+      สถานการณ์นี้แสดงให้เห็นว่าระบบเดิมขาดคุณสมบัติในข้อใด และระบบฐานข้อมูล (DBMS)<br>
+      จะสามารถเข้ามาแก้ไขปัญหาดังกล่าวนี้ได้อย่างไรเพื่อให้เกิดประสิทธิภาพสูงสุดแก่บริษัท
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. SELECT * FROM student WHERE score >= 60 ORDER BY score DESC;</p>
-      <p style="margin: 0; line-height: 1.4;">ข. SELECT * FROM student ORDER BY score DESC;</p>
-      <p style="margin: 0; line-height: 1.4;">ค. SELECT name, class FROM student WHERE score > 60;</p>
-      <p style="margin: 0; line-height: 1.4;">ง. SELECT * FROM student WHERE score <= 60 ORDER BY score DESC;</p>
+      <p style="margin: 0; line-height: 1.4;">ก. ขาดข้อมูลภายในองค์กร และระบบฐานข้อมูลจะช่วยดึงข้อมูลจากภายนอก</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ขาดอิสระของข้อมูล และแยกโครงสร้างออกจากโปรแกรม</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ขาดความปลอดภัย และระบบฐานข้อมูลจะช่วยใส่รหัสผ่านให้ไฟล์</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ขาดความซ้ำซ้อนของข้อมูล (Data Redundancy) และระบบฐานข้อมูลจะช่วยสร้างไฟล์เพิ่ม</p>
     </div>
   </div>
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      7. หลังจากสร้างตารางนักเรียนแล้ว เจ้าหน้าที่ต้องการเพิ่มข้อมูลนักเรียนใหม่
-รหัสนักเรียน 2001 ชื่อ อนันต์ นามสกุล สุขใจ
-ระดับชั้น มัธยมศึกษาปีที่ 4 คะแนนสอบกลางภาค 65
-คำสั่งใดเขียนได้ถูกต้องและครบถ้วนที่สุด
+      7. บริษัทประกันภัยเปลี่ยนระบบจัดเก็บจาก Hard Disk เป็น SSD และใช้อัลกอริทึมบีบอัดใหม่<br>
+      ทำให้ Internal Schema เปลี่ยนแปลงอย่างมาก แต่โปรแกรมในระดับ External Level<br>
+      ยังคงทำงานได้ปกติโดยไม่ต้องแก้ไขโค้ด สถานการณ์นี้สะท้อนถึงคุณสมบัติในข้อใดชัดเจนที่สุด<br>
+      และกระบวนการใดในระบบที่ต้องทำงานเพื่อรองรับการเปลี่ยนแปลงในระดับโครงสร้างนี้
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. INSERT INTO student<br> 
-(student_id, first_name, last_name, class_level, midterm_score)
-VALUES <br>(2001, 'อนันต์', 'สุขใจ', 'มัธยมศึกษาปีที่ 4', 65);
-</p>
-      <p style="margin: 0; line-height: 1.4;">ข. INSERT student <br>VALUES (2001, 'อนันต์', 'สุขใจ', 'มัธยมศึกษาปีที่ 4', 65);
-</p>
-      <p style="margin: 0; line-height: 1.4;">ค. INSERT INTO student<br> 
-VALUES ('อนันต์', 'สุขใจ', 2001, 65, 'มัธยมศึกษาปีที่ 4');
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. INSERT INTO student <br>
-(student_id, first_name, last_name)<br>
-VALUES (2001, 'อนันต์', 'สุขใจ');
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. Logical Data Independence และเกิดการปรับปรุง External/Conceptual Mapping</p>
+      <p style="margin: 0; line-height: 1.4;">ข. User View Optimization และเกิดการปรับปรุงเฉพาะระดับ External Schema</p>
+      <p style="margin: 0; line-height: 1.4;">ค. Physical Data Independence และเกิดการปรับปรุง Conceptual/Internal Mapping</p>
+      <p style="margin: 0; line-height: 1.4;">ง. Data Redundancy Control และเกิดการปรับปรุงระดับโครงสร้างตาราง</p>
     </div>
   </div>
+
+
     
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      8. ครูต้องการตรวจสอบรายชื่อนักเรียนทั้งหมด
-โดยต้องการแสดงเฉพาะ รหัสนักเรียน ชื่อ และคะแนนสอบกลางภาค
-และเรียงลำดับคะแนนจากมากไปน้อย
-คำสั่งใดเหมาะสมที่สุด
+      8. มหาวิทยาลัยเพิ่มฟิลด์ 'คะแนนกิจกรรมสะสม' ในระดับ Conceptual Schema ของฐานข้อมูล<br>
+      แต่โปรแกรมฝ่ายธุรการที่มองผ่าน External Schema (เห็นเฉพาะ รหัส ชื่อ สาขา) ยังคงทำงาน<br>
+      ได้ปกติโดยไม่ต้องแก้ไขโค้ด แม้จะมีการเพิ่มข้อมูลใหม่ลงไปในโครงสร้างหลักของระบบแล้วก็ตาม<br>
+      สถานการณ์นี้แสดงถึงคุณสมบัติในด้านใด และเป็นเพราะเหตุใดโปรแกรมเดิมจึงยังใช้งานได้
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. SELECT * FROM student ORDER BY midterm_score;
-</p>
-      <p style="margin: 0; line-height: 1.4;">ข. SELECT first_name, midterm_score 
-<br>FROM student <br>
-WHERE midterm_score DESC;
-</p>
-      <p style="margin: 0; line-height: 1.4;">ค. SELECT student_id, first_name, midterm_score <br>
-FROM student <br>
-ORDER BY midterm_score DESC;
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. SELECT student_id, first_name 
-<br>FROM student<br> 
-ORDER BY midterm_score DESC;
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. ความเป็นอิสระของข้อมูลทางตรรกะ เนื่องจากเปลี่ยนระดับแนวคิดได้โดยไม่กระทบระดับภายนอก</p>
+      <p style="margin: 0; line-height: 1.4;">ข. การใช้ Subschema ในระดับภายใน เพื่อซ่อนฟิลด์ใหม่ไม่ให้ระบบประมวลผลเห็น</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ความเป็นอิสระของข้อมูลทางกายภาพ (Physical Data Independence) เนื่องจากไม่มีการเปลี่ยนตำแหน่งไฟล์ในดิสก์</p>
+      <p style="margin: 0; line-height: 1.4;">ง. การทำ Data Integrity Mapping เพื่อตรวจสอบความถูกต้องของคะแนนสะสมก่อนแสดงผล</p>
     </div>
   </div>
 
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      9. การใช้คำสั่ง UPDATE โดยไม่ระบุเงื่อนไข
-มีผลกระทบอย่างไรกับข้อมูล
+      9. บริษัทเกมต้องการเก็บข้อมูล 'ตัวละคร' ที่มีทั้งสถานะ (เช่น เลือด, พลังเวท) และพฤติกรรม<br>
+      (เช่น การเดิน, การโจมตี, การคำนวณความเสียหาย) จากความต้องการที่ซับซ้อนข้างต้นนี้<br>
+      แบบจำลองข้อมูลประเภทใดเหมาะสมที่สุด เพื่อให้นักพัฒนาเขียนโปรแกรมโต้ตอบข้อมูล<br>
+      ได้อย่างเป็นธรรมชาติ และสามารถลดความซับซ้อนในการ Mapping ข้อมูลในเชิงโครงสร้าง
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. แก้ไขทุกแถวในตาราง</p>
-      <p style="margin: 0; line-height: 1.4;">ข. แก้ไขเฉพาะแถวแรก</p>
-      <p style="margin: 0; line-height: 1.4;">ค. แก้ไขเฉพาะแถวที่มีข้อมูลซ้ำ</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ไม่เกิดการเปลี่ยนแปลงใด ๆ</p>
+      <p style="margin: 0; line-height: 1.4;">ก. แบบจำลองข้อมูลแบบแบนราบ (Flat File Data Model)</p>
+      <p style="margin: 0; line-height: 1.4;">ข. แบบจำลองข้อมูลเชิงวัตถุ (Object-Oriented Data Model)</p>
+      <p style="margin: 0; line-height: 1.4;">ค. แบบจำลองข้อมูลเชิงตรรกะ (Logical Data Model) แบบเดิม</p>
+      <p style="margin: 0; line-height: 1.4;">ง. แบบจำลองข้อมูลแบบลำดับชั้น (Hierarchical Data Model)</p>
     </div>
   </div>
 
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      10. การลบข้อมูลสินค้าออกจากระบบ
-ควรพิจารณาสิ่งใดเป็นอันดับแรก
+      10. หากท่านเป็น DBA และต้องการเปลี่ยนวิธีการจัดเก็บข้อมูลในฮาร์ดดิสก์จากแบบเรียงลำดับ<br>
+      (Sequential) เป็นแบบดัชนี (Indexing) โดยที่ชื่อฟิลด์และความสัมพันธ์เดิมไม่มีการเปลี่ยนแปลง<br>
+      นักศึกษาต้องเข้าไปจัดการที่สคีมาในระดับใด และเหตุการณ์นี้จะส่งผลกระทบอย่างไรต่อโปรแกรม<br>
+      ประยุกต์ของผู้ใช้ที่เชื่อมต่อกับระบบฐานข้อมูลตามหลักการ Data Independence
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ความถูกต้องของเงื่อนไข</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ความเร็วของคำสั่ง</p>
-      <p style="margin: 0; line-height: 1.4;">ค. จำนวนคอลัมน์ในตาราง
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. การเรียงลำดับข้อมูล
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. จัดการที่ Conceptual Schema และทำให้ผู้ใช้มองเห็นดัชนีปรากฏบนหน้าจอโปรแกรม</p>
+      <p style="margin: 0; line-height: 1.4;">ข. จัดการทุกระดับพร้อมกัน เพราะการเพิ่มดัชนีคือการเปลี่ยนความหมายเชิงตรรกะของข้อมูล</p>
+      <p style="margin: 0; line-height: 1.4;">ค. จัดการที่ External Schema และทำให้โปรแกรมต้องเขียนใหม่เพื่อรองรับระบบดัชนี</p>
+      <p style="margin: 0; line-height: 1.4;">ง. จัดการที่ Internal Schema และไม่ส่งผลกระทบใดๆ ต่อโปรแกรมประยุกต์ของผู้ใช้</p>
     </div>
   </div>
 
 
     <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      11. โรงเรียนจัดเก็บข้อมูลนักเรียนไว้ในตาราง student
-ประกอบด้วย รหัสนักเรียน ชื่อ นามสกุล ระดับชั้น และคะแนนสอบกลางภาค
-ฝ่ายวิชาการต้องการตรวจสอบนักเรียนที่ มีคะแนนสอบตั้งแต่ 60 คะแนนขึ้นไป
-และต้องการนำข้อมูลไปจัดทำรายงานเฉพาะนักเรียนที่
-อยู่ในระดับ “มัธยมศึกษาปีที่ 3” เท่านั้น
-คำสั่งใดแสดงข้อมูลได้ตรงตามเงื่อนไขทั้งหมดมากที่สุด
+      11. วิศวกรพบว่าในระบบแบบลำดับชั้น (Hierarchical) เมื่อทำการ 'ลบข้อมูลฝ่ายขาย' ออกจากระบบ<br>
+      ข้อมูลพนักงานที่สังกัดฝ่ายนั้นจะหายไปด้วยโดยอัตโนมัติ (Cascading Delete) จากสถานการณ์นี้<br>
+      ข้อใดอธิบายเหตุผลทางสถาปัตยกรรมได้ถูกต้อง และปัญหานี้ถูกแก้ไขอย่างไรในแบบจำลองเชิงสัมพันธ์<br>
+      เพื่อให้ข้อมูลพนักงานยังคงอยู่ได้แม้จะมีการเปลี่ยนแปลงโครงสร้างของหน่วยงานต้นสังกัด
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. SELECT * FROM student<br>
-WHERE score >= 60;
-</p>
-      <p style="margin: 0; line-height: 1.4;">ข. SELECT * FROM student<br>
-WHERE score >= 60<br>
-AND class_level = 'มัธยมศึกษาปีที่ 3';
-</p>
-      <p style="margin: 0; line-height: 1.4;">ค. SELECT * FROM student
-<br>WHERE class_level = 'มัธยมศึกษาปีที่ 3';
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. SELECT * FROM student<br>
-WHERE score > 60<br>
-OR class_level = 'มัธยมศึกษาปีที่ 3';
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. เป็นเพราะโครงสร้างแบบ Root และ Child ซึ่งลูกอยู่เดี่ยวๆ ไม่ได้; แก้ไขโดยใช้ตารางแยกและเชื่อมด้วย Foreign Key</p>
+      <p style="margin: 0; line-height: 1.4;">ข. เป็นเพราะหน่วยจัดเก็บในสมัยก่อนมีขนาดเล็ก; แก้ไขโดยการเพิ่มพื้นที่จัดเก็บให้พนักงานอยู่ได้โดยไม่ต้องสังกัดฝ่าย</p>
+      <p style="margin: 0; line-height: 1.4;">ค. เป็นเพราะแบบลำดับชั้นไม่มีระดับ Conceptual Level; แก้ไขโดยการเพิ่มระดับแนวคิดเข้าไปในระบบตาราง</p>
+      <p style="margin: 0; line-height: 1.4;">ง. เป็นเพราะการกระทำ Mapping ระหว่างระดับ External/Internal ไม่สมบูรณ์; แก้ไขโดยการใช้ Object-Oriented มาแทน</p>
     </div>
   </div>
 
   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      12. ฝ่ายทะเบียนต้องการตรวจสอบรายชื่อนักเรียน
-ที่ ยังไม่มีการบันทึกคะแนนสอบกลางภาค
-เนื่องจากข้อมูลส่วนนี้จะถูกส่งต่อให้ครูผู้สอนตรวจสอบอีกครั้ง
-การตั้งเงื่อนไขใดเหมาะสมที่สุดสำหรับสถานการณ์นี้
+      12. คำว่า 'สคีมา (Schema)' ถูกเปรียบเทียบว่าเป็นเค้าร่างหรือรูปแบบ หากเราพิจารณาฐานข้อมูลขนาดใหญ่
+      ที่มีกลุ่มผู้ใช้หลากหลายประเภท เช่น ผู้ใช้ทั่วไป, ผู้ดูแลระบบ (DBA) และนักพัฒนาโปรแกรมเมอร์<br>
+      ข้อใดคือคำอธิบายความสัมพันธ์ของสคีมาในระดับต่างๆ ได้ถูกต้องและชัดเจนที่สุดตามหลักทฤษฎี<br>
+      สถาปัตยกรรมระบบฐานข้อมูล 3 ระดับ (Three-Level Architecture)
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ตรวจสอบคะแนนสอบมากกว่า 0</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ตรวจสอบคะแนนสอบเป็นค่าว่าง</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ตรวจสอบคะแนนสอบเท่ากับ 0
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ตรวจสอบคะแนนสอบน้อยกว่า 60
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. มี Internal Schema หลายชุดเพื่อกระจายข้อมูลไปยังฮาร์ดดิสก์หลายลูก แต่มี Conceptual Schema ชุดเดียว</p>
+      <p style="margin: 0; line-height: 1.4;">ข. สคีมาเป็นเพียงภาพวาดในกระดาษสำหรับผู้ออกแบบ ไม่เกี่ยวข้องกับการทำงานจริงของซอฟต์แวร์ DBMS</p>
+      <p style="margin: 0; line-height: 1.4;">ค. มี Conceptual Schema เพียงหนึ่งเดียวต่อหนึ่งฐานข้อมูล แต่มี External Schema ได้หลายชุดตามกลุ่มผู้ใช้</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ทุกระดับจะมีสคีมาเพียงชุดเดียวเท่านั้น เพื่อป้องกันความสับสนและลดความซับซ้อนในการทำ Mapping</p>
     </div>
   </div>
-
 
 
     <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
       <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-      13. ระบบทะเบียนนักศึกษาต้องการแสดงข้อมูลนักศึกษาที่ชื่อขึ้นต้นด้วยคำว่า “สม” โดยข้อมูลต้องถูกค้นหาจากตารางนักศึกษา และต้องสามารถแสดงเฉพาะนักศึกษาที่ตรงกับรูปแบบชื่อดังกล่าวเท่านั้น การเลือกใช้คำสั่งใดเหมาะสมที่สุด
+      13. หากบริษัทอสังหาริมทรัพย์ต้องการเก็บข้อมูล 'พิมพ์เขียว 3 มิติ' รวมถึงบันทึก 'ขั้นตอนการคำนวณราคา'
+      ตามวัสดุที่เปลี่ยนไปโดยอัตโนมัติภายในตัวฐานข้อมูลเอง แบบจำลองข้อมูล (Data Model) <br>ในข้อใด
+      จะช่วยลดภาระในการเขียนโปรแกรมประยุกต์ (Application Logic) ได้มากที่สุดในเชิงโครงสร้าง
+      และการจัดการข้อมูลที่มีความซับซ้อนสูงตามความต้องการข้างต้นนี้
   </div>
   
     <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-      <p style="margin: 0; line-height: 1.4;">ก. ใช้คำสั่งเลือกข้อมูลโดยกำหนดเงื่อนไขชื่อเท่ากับคำที่กำหนด</p>
-      <p style="margin: 0; line-height: 1.4;">ข. ใช้คำสั่งเรียงข้อมูลนักศึกษาตามชื่อ</p>
-      <p style="margin: 0; line-height: 1.4;">ค. ใช้คำสั่งเพิ่มข้อมูลนักศึกษาที่ชื่อขึ้นต้นตามที่กำหนด
-</p>
-      <p style="margin: 0; line-height: 1.4;">ง. ใช้คำสั่งเลือกข้อมูลโดยใช้เงื่อนไขรูปแบบข้อความ
-</p>
+      <p style="margin: 0; line-height: 1.4;">ก. Relational Data Model เพราะสามารถใช้ตารางเก็บพิกัด 3 มิติ และใช้ SQL คำนวณราคาได้เร็วกว่า</p>
+      <p style="margin: 0; line-height: 1.4;">ข. Object-Oriented Data Model เพราะรองรับข้อมูลซับซ้อนและเก็บพฤติกรรมไว้กับข้อมูลได้</p>
+      <p style="margin: 0; line-height: 1.4;">ค. Network Data Model เพราะพิมพ์เขียวมีความเชื่อมโยงของโครงสร้างกันแบบใยแมงมุม</p>
+      <p style="margin: 0; line-height: 1.4;">ง. Hierarchical Data Model เพราะบ้านถูกแบ่งเป็นชั้นๆ และห้องต่างๆ ตามลำดับความสำคัญ</p>
     </div>
   </div>
 
-   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    14. พิจารณาคำสั่ง SQL ต่อไปนี้<br>
-   <br>
-    ครูต้องการตรวจสอบนักเรียนที่มีคะแนนผ่านเกณฑ์กลาง หากเกณฑ์ผ่านอยู่ระหว่าง 60 ถึง 80 คะแนน คำสั่งนี้ให้ผลลัพธ์อย่างไร
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. แสดงนักเรียนที่มีคะแนนอยู่ในช่วงที่กำหนด</p>
-    <p style="margin: 0; line-height: 1.4;">ข. แสดงนักเรียนทุกคนไม่จำกัดคะแนน</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แสดงนักเรียนที่มีคะแนนเท่ากับ 60 และ 80 เท่านั้น</p>
-    <p style="margin: 0; line-height: 1.4;">ง. แสดงนักเรียนที่มีคะแนนมากกว่า 80</p>
-  </div>
-</div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    15. พิจารณาคำสั่ง SQL ต่อไปนี้<br>
-   <br>
-    หากใช้คำสั่งนี้กับตาราง student ข้อใดอธิบายผลลัพธ์ได้ถูกต้องที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. แสดงนักเรียนที่ชื่อเท่ากับ Som เท่านั้น</p>
-    <p style="margin: 0; line-height: 1.4;">ข. แสดงนักเรียนที่ชื่อขึ้นต้นด้วยคำว่า Som</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แสดงนักเรียนที่มีชื่ออยู่ท้ายคำว่า Som</p>
-    <p style="margin: 0; line-height: 1.4;">ง. แสดงนักเรียนทุกคนที่มีชื่อ</p>
-  </div>
-</div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    16. กำหนดให้มีตารางดังนี้ ตาราง student เก็บข้อมูลนักเรียน, ตาราง classroom เก็บข้อมูลห้องเรียน<br>
-    พิจารณาคำสั่ง SQL:<br>
-   <br>
-    คำสั่งนี้มีวัตถุประสงค์หลักคือข้อใด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เชื่อมข้อมูลนักเรียนกับห้องเรียนโดยใช้รหัสห้อง</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เพิ่มข้อมูลห้องเรียนใหม่ให้กับนักเรียน</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แสดงข้อมูลนักเรียนโดยไม่สนใจข้อมูลห้อง</p>
-    <p style="margin: 0; line-height: 1.4;">ง. แสดงข้อมูลห้องเรียนโดยไม่สนใจนักเรียน</p>
-  </div>
-</div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    17. พิจารณาคำสั่ง SQL ต่อไปนี้<br>
-    SELECT first_name, last_name FROM student WHERE student_id IN (101, 103, 105);<br>
-    คำสั่งนี้เหมาะสมกับสถานการณ์ใดมากที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. แสดงนักเรียนทุกคนในตาราง</p>
-    <p style="margin: 0; line-height: 1.4;">ข. แสดงนักเรียนที่มีรหัสเรียงตามลำดับ</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แสดงนักเรียนที่มีรหัสมากที่สุด</p>
-    <p style="margin: 0; line-height: 1.4;">ง. แสดงนักเรียนที่มีรหัสอยู่ในชุดที่กำหนด</p>
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    18. วิทยาลัยมีระบบสารสนเทศนักศึกษา โดยเก็บข้อมูลนักศึกษาไว้ในตาราง student ซึ่งประกอบด้วยรหัสนักศึกษา ชื่อ และรหัสสาขา
-ข้อมูลสาขาถูกเก็บไว้ในตาราง major ซึ่งประกอบด้วยรหัสสาขาและชื่อสาขา
-ฝ่ายทะเบียนต้องการ ตรวจสอบเฉพาะนักศึกษาที่มีข้อมูลสาขาตรงกันจริงในระบบ
-โดยต้องการแสดงเฉพาะชื่อของนักศึกษาและชื่อสาขา
-หากนักศึกษาคนใดมีรหัสสาขาในตาราง student แต่ไม่มีข้อมูลสาขาในตาราง major ให้ ไม่นำมาแสดง
-คำสั่งใดตอบโจทย์นี้ได้ถูกต้องที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. SELECT student.first_name, major.major_name<br>
-FROM student<br>
-JOIN major<br>
-ON student.major_id = major.major_id;
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. SELECT first_name, major_name<br>
-FROM student, major<br>
-WHERE student.major_id = major.major_id;
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. SELECT student.first_name, major.major_name<br>
-FROM major<br>
-JOIN student<br>
-ON major.major_id = student.student_id;
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. SELECT student.first_name<br>
-FROM student<br>
-JOIN major;
-</p>
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    19. มีตาราง employee(emp_id, emp_name, salary, department_id)<br>
-ฝ่ายบุคคลต้องการแสดงพนักงานที่เงินเดือนมากกว่า 20,000 แต่ไม่เกิน 35,000
-และชื่อพนักงานต้องขึ้นต้นด้วยคำว่า “สม”
-ข้อมูลที่แสดงต้องเรียงตามชื่อพนักงานจาก ก ไป ฮ
-คำสั่งใดเหมาะสมที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. SELECT emp_id, emp_name, salary<br>
-FROM employee<br>
-WHERE salary BETWEEN 20000 AND 35000<br>
-ORDER BY emp_name;
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. SELECT emp_id, emp_name, salary
-<br>FROM employee<br>
-WHERE emp_name LIKE 'สม%'<br>
-ORDER BY salary;
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. SELECT emp_id, emp_name, salary
-<br>FROM employee<br>
-WHERE salary = 20000 AND salary = 35000<br>
-AND emp_name LIKE '%สม'<br>
-ORDER BY emp_name;
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. SELECT emp_id, emp_name, salary
-<br>FROM employee<br>
-WHERE salary BETWEEN 20000 AND 35000<br>
-AND emp_name LIKE 'สม%'<br>
-ORDER BY emp_name;
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    20. ระบบทะเบียนนักศึกษาเก็บข้อมูลแยกเป็นตารางนักเรียน ตารางห้อง และตารางผลการเรียน
-ครูต้องการแสดงรายชื่อนักเรียนพร้อมชื่อห้อง
-โดยใช้คะแนนที่นำมาบวกคะแนนพิเศษแล้วเป็นเงื่อนไขในการคัดกรอง
-นักเรียนที่แสดงผลต้องอยู่ในบางห้องที่กำหนด และคะแนนรวมต้องอยู่ในช่วงที่ระบุ
-นอกจากนี้ ชื่อนักเรียนต้องมีรูปแบบข้อความตรงตามบางส่วน
-และผลลัพธ์ต้องเรียงจากคะแนนรวมมากไปน้อย
-เมื่อพิจารณาเชิงโครงสร้างของคำสั่ง SQL
-แนวคิดใดอธิบายลำดับการทำงานของคำสั่งได้สอดคล้องกับผลลัพธ์มากที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. คำนวณค่าก่อน แล้วเชื่อมตาราง กรองข้อมูลตามช่วง และจัดลำดับข้อมูลที่ได้
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เชื่อมตารางก่อน จากนั้นคำนวณค่า กรองข้อมูลตามช่วง และจัดลำดับ
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. กรองข้อมูลตามช่วงก่อน แล้วคำนวณค่า เชื่อมตาราง และจัดลำดับผลลัพธ์
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. เชื่อมตาราง กรองข้อมูลตามรูปแบบข้อความ แล้วจึงคำนวณและจัดลำดับข้อมูล
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    21. ระบบร้านค้าออนไลน์ต้องแสดงข้อมูลคำสั่งซื้อพร้อมชื่อลูกค้า
-โดยต้องพิจารณายอดเงินที่ได้จากการนำราคาสินค้ามาบวกค่าจัดส่ง
-คำสั่งซื้อที่แสดงต้องมาจากลูกค้าบางกลุ่มที่กำหนดไว้
-ยอดเงินรวมต้องอยู่ในช่วงที่ระบุ และชื่อสินค้าต้องตรงตามรูปแบบบางส่วน
-ผลลัพธ์สุดท้ายต้องเรียงตามยอดเงินจากน้อยไปมาก
-หากพิจารณาเชิงแนวคิดของการเขียน SQL
-ข้อใดอธิบายเงื่อนไขทั้งหมดได้ครบโดยไม่ขัดแย้งกัน
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้การเชื่อมตาราง ตรวจสอบค่าจากชุด ตรวจสอบช่วงค่า คำนวณยอดเงิน และจัดเรียงผลลัพธ์
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้การเชื่อมตาราง คำนวณยอดเงิน ตรวจสอบช่วงค่า ตรวจสอบค่าจากชุด และจัดเรียงผลลัพธ์
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้การคำนวณยอดเงิน ตรวจสอบช่วงค่า เชื่อมตาราง ตรวจสอบรูปแบบข้อความ และจัดเรียง
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้การตรวจสอบรูปแบบข้อความ ตรวจสอบค่าจากชุด คำนวณยอดเงิน และเชื่อมตาราง
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    22. พิจารณาฐานข้อมูลระบบบริหารการเรียนการสอน ซึ่งประกอบด้วยตารางดังต่อไปนี้<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตาราง student ประกอบด้วยฟิลด์<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;student_id<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;student_name<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;student_status<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตาราง enrollment ประกอบด้วยฟิลด์<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;student_id<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_id<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll_year<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตาราง course ประกอบด้วยฟิลด์<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_id<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_name<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_credit<br>
-ผู้ดูแลระบบต้องการ แสดงรายชื่อนักศึกษา ที่ตรงตามเงื่อนไขทั้งหมดดังนี้<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. นักศึกษาต้องมีสถานะเป็น active<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. ต้องเคยลงทะเบียนเรียนในปี ระหว่าง 2021 ถึง 2024<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. ต้องเรียนรายวิชาที่มีหน่วยกิต มากกว่า 3 หน่วยกิต<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. ชื่อนักศึกษาต้องขึ้นต้นด้วยคำว่า “ชา”<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. ต้องไม่เคยลงทะเบียนเรียนในรายวิชาที่ชื่อมีคำว่า “ทดลอง” ปรากฏอยู่<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6. ชื่อนักศึกษาที่แสดงต้องไม่ซ้ำกัน<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7. ต้องเรียงลำดับผลลัพธ์ตามชื่อนักศึกษาจาก ก → ฮ<br>
-คำสั่ง SQL ใด ถูกต้องและครบถ้วนตามเงื่อนไขมากที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. <br>SELECT DISTINCT student.student_name<br>
-FROM student, enrollment, course<br>
-WHERE student.student_id = enrollment.student_id<br>
-AND enrollment.course_id = course.course_id<br>
-AND student.student_status = 'active'<br>
-AND enrollment.enroll_year >= 2021<br>
-AND enrollment.enroll_year <= 2024<br>
-AND course.course_credit >= 3<br>
-AND student.student_name LIKE '%ชา'<br>
-AND course.course_name NOT LIKE '%ทดลอง%'<br>
-ORDER BY student.student_name ASC;<br>
-
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. <br>SELECT DISTINCT student.student_name<br>
-FROM student<br>
-JOIN enrollment ON student.student_id = enrollment.student_id<br>
-JOIN course ON enrollment.course_id = course.course_id<br>
-WHERE student.student_status = 'active'<br>
-AND enrollment.enroll_year BETWEEN 2021 AND 2024<br>
-AND course.course_credit > 3<br>
-AND student.student_name LIKE 'ชา%'<br>
-AND student.student_id NOT IN (<br>
-    SELECT enrollment.student_id<br>
-    FROM enrollment<br>
-    JOIN course ON enrollment.course_id = course.course_id<br>
-    WHERE course.course_name LIKE '%ทดลอง%'<br>
-)<br>
-ORDER BY student.student_name ASC;<br>
-
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. <br>SELECT student.student_name<br>
-FROM student<br>
-WHERE student.student_status = 'active'<br>
-AND student.student_name LIKE 'ชา%'<br>
-AND student.student_id IN (<br>
-    SELECT enrollment.student_id<br>
-    FROM enrollment<br>
-    WHERE enrollment.enroll_year BETWEEN 2021 AND 2024<br>
-)<br>
-ORDER BY student.student_name ASC;<br>
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. <br>SELECT student.student_name<br>
-FROM student<br>
-LEFT JOIN enrollment ON student.student_id = enrollment.student_id<br>
-LEFT JOIN course ON enrollment.course_id = course.course_id<br>
-WHERE student.student_status = 'active'<br>
-AND enrollment.enroll_year BETWEEN 2021 AND 2024<br>
-AND course.course_credit > 3<br>
-AND student.student_name LIKE 'ชา%'<br>
-AND course.course_name NOT IN ('ทดลอง')<br>
-ORDER BY student.student_name ASC;
-
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    23. ฐานข้อมูลระบบบุคลากรมีตาราง <br>employee(employee_id, employee_name, employee_status)<br>
-และ salary(employee_id, salary_year, salary_amount)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ต้องการแสดงชื่อพนักงานที่<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. สถานะ active<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. มีเงินเดือนปีระหว่าง 2020–2023<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. ไม่เคยมีเงินเดือนต่ำกว่า 15,000<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. ชื่อขึ้นต้นด้วย “สม”<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. ชื่อไม่ซ้ำ และเรียงตามชื่อ<br>
-คำสั่งใดถูกต้อง
-
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้ LEFT JOIN ไม่กรอง
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้ BETWEEN อย่างเดียว
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ IN เงินเดือนมากกว่า
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้ NOT IN กับ salary ต่ำกว่า
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    24. เงื่อนไขใดใช้ตรวจหลายค่า
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. =
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. LIKE
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. IN
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. BETWEEN
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    25. "ระบบทะเบียนนักศึกษามีตาราง student(student_id, student_name, student_status)<br>
-ตาราง enrollment(student_id, course_id, enroll_year)<br>
-และตาราง course(course_id, course_name, course_credit)<br>
-
-ฝ่ายวิชาการต้องการตรวจสอบรายชื่อนักศึกษาที่ยังมีสถานะเป็น active โดยนักศึกษานั้น
-ต้องเคยลงทะเบียนเรียนในปีการศึกษาระหว่าง 2021 ถึง 2024
-และต้องเป็นการลงทะเบียนในรายวิชาที่มีหน่วยกิตมากกว่า 3 หน่วยกิตเท่านั้น
-ชื่อนักศึกษาต้องขึ้นต้นด้วยคำว่า “ชา”
-และที่สำคัญ นักศึกษานั้นต้องไม่เคยลงทะเบียนเรียนในรายวิชาที่มีคำว่า “ทดลอง” อยู่ในชื่อรายวิชาเลยแม้แต่ครั้งเดียว
-ผลลัพธ์ที่แสดงต้องไม่ซ้ำกัน และเรียงตามลำดับชื่อนักศึกษา"<br>
-
-แนวคิดในการเขียนคำสั่ง SQL ใดเหมาะสมที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้ JOIN ร่วมกับ NOT IN
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้ BETWEEN อย่างเดียว
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ LIKE โดยไม่ใช้ซับคิวรี
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้ LEFT JOIN แล้วกรองชื่อ
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    26. "ระบบบุคลากรมีตาราง employee(employee_id, employee_name, employee_status)<br>
-และตาราง salary(employee_id, salary_year, salary_amount)<br>
-
-ฝ่ายการเงินต้องการรายชื่อพนักงานที่ยังทำงานอยู่
-โดยพนักงานต้องมีข้อมูลเงินเดือนในช่วงปีระหว่าง 2020 ถึง 2023
-และตลอดระยะเวลาที่มีข้อมูลเงินเดือนนั้น ต้องไม่เคยได้รับเงินเดือนต่ำกว่า 15,000 บาทเลย
-ชื่อพนักงานต้องมีคำว่า “ชัย” ปรากฏอยู่ไม่จำกัดตำแหน่ง
-และรายชื่อที่แสดงต้องไม่ซ้ำ"<br>
-
-ควรเลือกแนวคิดใดในการเขียนคำสั่ง SQL
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้ BETWEEN เงินเดือน
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้ LIKE อย่างเดียว
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ NOT IN ตรวจเงินเดือนต่ำ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้ ORDER BY แทนการกรอง
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    27. ระบบลูกค้าจัดเก็บข้อมูลในตาราง customer และบันทึกการสั่งซื้อในตาราง order_record ฝ่ายการตลาดต้องการลบข้อมูลลูกค้าที่ไม่เคยมีประวัติการสั่งซื้อเลยแม้แต่ครั้งเดียว และชื่อขึ้นต้นด้วยคำว่า “test” โดยต้องมั่นใจว่าจะไม่ลบลูกค้าที่เคยมีคำสั่งซื้อหลงเหลืออยู่ในระบบ แนวคิดใดปลอดภัยและเหมาะสมที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้ DROP TABLE
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้ DELETE ร่วมกับ NOT IN
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ TRUNCATE TABLE
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้ UPDATE เปลี่ยนชื่อ
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    28. โรงพยาบาลแห่งหนึ่งใช้ฐานข้อมูลเพื่อติดตามประวัติการรักษาของผู้ป่วย โดยจัดเก็บข้อมูลผู้ป่วยไว้ในตาราง patient ซึ่งประกอบด้วยรหัสผู้ป่วย ชื่อผู้ป่วย และสถานะการรักษา เก็บข้อมูลการเข้ารับการรักษาไว้ในตาราง treatment_record ซึ่งระบุปีที่เข้ารับการรักษา และเก็บข้อมูลยาที่ใช้รักษาไว้ในตาราง medicine ซึ่งประกอบด้วยชื่อยาและประเภท ฝ่ายบริหารต้องการรายชื่อผู้ป่วยที่ยังอยู่ในสถานะรักษาอยู่ในปัจจุบัน เคยเข้ารับการรักษาอย่างน้อยหนึ่งครั้งในช่วงปีระหว่าง 2020 ถึง 2024 และได้รับยาเฉพาะประเภทที่กำหนดเท่านั้น โดยมีเงื่อนไขสำคัญว่า หากผู้ป่วยรายใดเคยได้รับยาที่มีคำว่า “ทดลอง” ปรากฏอยู่ในชื่อยาแม้เพียงครั้งเดียว จะต้องไม่ถูกนำมาแสดงในผลลัพธ์ ไม่ว่าข้อมูลการรักษาอื่นจะถูกต้องครบถ้วนเพียงใดก็ตาม และชื่อผู้ป่วยต้องมีคำว่า “ศักดิ์” ปรากฏอยู่ไม่จำกัดตำแหน่ง
-แนวคิดในการเขียนคำสั่ง SQL ใดสะท้อนตรรกะของเงื่อนไขทั้งหมดได้ถูกต้องและปลอดภัยที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เชื่อมตารางทั้งหมดเข้าด้วยกันแล้วกรองเฉพาะแถวที่ชื่อยาไม่ปรากฏคำต้องห้าม โดยถือว่าแถวที่ผ่านเงื่อนไขเพียงแถวเดียวเพียงพอ
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เลือกผู้ป่วยที่เข้าเงื่อนไขสถานะ ช่วงปี และชื่อทั้งหมดก่อน จากนั้นจึงใช้ซับคิวรีเพื่อตัดผู้ป่วยที่เคยได้รับยาซึ่งมีคำต้องห้ามออกจากผลลัพธ์
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. กรองผู้ป่วยตามสถานะและช่วงปี จากนั้นใช้เงื่อนไขชื่อยาแบบไม่เท่ากับคำต้องห้ามโดยไม่ตรวจสอบประวัติย้อนหลังทั้งหมด
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ดึงข้อมูลผู้ป่วยทุกคนที่มีชื่อถูกต้องก่อน แล้วใช้การจัดกลุ่มเพื่อลบข้อมูลซ้ำโดยไม่พิจารณาการได้รับยาต้องห้าม
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    29. แพลตฟอร์มสตรีมมิงมีตาราง user_account สำหรับเก็บข้อมูลผู้ใช้ และตาราง viewing_history สำหรับเก็บประวัติการรับชมที่ระบุปีและระยะเวลาการรับชม ฝ่ายวิเคราะห์ต้องการรายชื่อผู้ใช้ที่เคยรับชมเนื้อหาอย่างน้อยหนึ่งครั้งในช่วงปีระหว่าง 2020 ถึง 2023 และมียอดเวลารับชมรวมต่อปีมากกว่า 100 ชั่วโมงทุกปี แต่หากผู้ใช้รายใดมีปีใดปีหนึ่งที่เวลารับชมต่ำกว่าเกณฑ์หรือไม่มีข้อมูลปีนั้นเลย จะต้องถูกตัดออกทันที แนวคิดใดสะท้อนเงื่อนไขนี้ได้ถูกต้องที่สุด
-  </div>
-
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. กรองเฉพาะแถวที่เวลารับชมมากกว่าเกณฑ์ แล้วแสดงรายชื่อผู้ใช้
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ใช้ NOT IN ตัดเฉพาะปีที่ต่ำกว่าเกณฑ์ โดยไม่สนปีที่ขาดหาย
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ BETWEEN กรองปี แล้วรวมเวลารับชมทั้งหมดโดยไม่แยกปี
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. จัดกลุ่มตามผู้ใช้และปี แล้วตรวจสอบจำนวนปีและผลรวมด้วยเงื่อนไข
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    30. ระบบการเงินของบริษัทมีตาราง account และ transaction_record ฝ่ายตรวจสอบต้องการรายชื่อบัญชีที่เคยมีธุรกรรมในช่วงปีระหว่าง 2022 ถึง 2024 
-  และยอดธุรกรรมรวมเป็นบวกทุกปี แต่หากบัญชีใดเคยมีธุรกรรมที่มียอดติดลบเกิน -50,000 บาทแม้เพียงครั้งเดียว จะต้องถูกตัดออกจากผลลัพธ์ทั้งหมด 
-  <br>พิจารณาแนวคิดจากโค้ดด้านล่าง<br>
-SELECT account.account_id<br>
-FROM account<br>
-JOIN transaction_record ON account.account_id = transaction_record.account_id<br>
-แนวคิดใดควรนำไปใช้ต่อเพื่อให้ได้ผลลัพธ์ถูกต้อง
+   <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      14. ทีมวิจัยพบว่าทุกครั้งที่มีการร้องขอข้อมูล ระบบต้องเสียเวลา (Overhead) ในการแปลคำสั่ง<br>
+      ผ่านชั้นต่างๆ ถึง 2 ครั้ง แต่สถาปัตยกรรม ANSI-SPARC ยังคงเป็นมาตรฐานที่ยอมรับสูงสุด<br>
+      นักศึกษาคิดว่าเหตุผลข้อใดที่สามารถหักล้างข้อเสียเรื่องความช้าในการแปลคำสั่ง (Mapping)<br>
+      นี้ได้ดีที่สุดในบริบทของการดำเนินธุรกิจจริงที่มีการเปลี่ยนแปลงทางเทคโนโลยีอยู่ตลอดเวลา
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ใช้การจัดเรียงข้อมูลเพื่อแยกยอดติดลบออกจากผลลัพธ์
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ตรวจสอบเฉพาะธุรกรรมในช่วงปีที่กำหนด โดยไม่พิจารณาธุรกรรมอื่น
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. เพิ่มซับคิวรีเพื่อตัดบัญชีที่เคยมียอดติดลบเกินเกณฑ์ออกจากผลลัพธ์ทั้งหมด
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. กรองเฉพาะแถวที่ยอดเป็นบวก แล้วสรุปผลเป็นรายบัญชี
-</p>
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ความคุ้มค่าจากการไม่ต้องแก้ไขและคอมไพล์โปรแกรมใหม่ทั้งหมดเมื่อมีการเปลี่ยนโครงสร้างระดับล่าง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. การทำ Mapping ช่วยบีบอัดข้อมูลในระหว่างทางทำให้การส่งข้อมูลผ่านเครือข่ายทำได้รวดเร็วขึ้น</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ความเร็วของหน่วยประมวลผลเพิ่มขึ้นมากจนการ Mapping ไม่ส่งผลต่อประสิทธิภาพที่มนุษย์สัมผัสได้</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ระบบฐานข้อมูลสมัยใหม่ได้ยุบรวมระดับแนวคิดและระดับภายในเข้าด้วยกันเพื่อลด Overhead อยู่แล้ว</p>
+    </div>
   </div>
 
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    31. ระบบจัดการคลังสินค้าเก็บข้อมูลสินค้าไว้ในตาราง product และเก็บข้อมูลการเคลื่อนไหวสินค้าไว้ในตาราง stock_log ฝ่ายคลังต้องการรายชื่อสินค้าที่เคยมีการเพิ่มจำนวนสินค้าเข้าคลังในช่วงปีระหว่าง 2020 ถึง 2023 อย่างน้อยหนึ่งครั้ง แต่ต้องไม่เคยมีการลบจำนวนสินค้าออกจากคลังเลยแม้แต่ครั้งเดียว และชื่อสินค้าต้องขึ้นต้นด้วยคำว่า “PRO” นอกจากนี้ ต้องการผลลัพธ์เฉพาะสินค้าที่ยังคงมีสถานะใช้งานอยู่
-วิธีคิดใดสะท้อนเงื่อนไขทั้งหมดได้ครบถ้วน
+
+ <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      15. ตาราง 'Products' มี Attribute คือ ProductID, ProductName, Category, SupplierID และ SupplierName<br>
+      เมื่อตรวจสอบพบว่า SupplierName มักจะซ้ำซ้อนกันเสมอเมื่อสินค้าหลายชนิดมาจากผู้ผลิตรายเดียวกัน<br>
+      หากท่านต้องการปรับปรุง (Refactor) โครงสร้างนี้ตามหลักการฐานข้อมูลที่ดีเพื่อลดความซ้ำซ้อน<br>
+      ท่านควรดำเนินการจัดการกับโครงสร้างข้อมูลและ Attribute ดังกล่าวอย่างไรจึงจะเหมาะสมที่สุด
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เลือกเฉพาะบันทึกที่เป็นการเพิ่มสินค้า แล้วละเว้นการตรวจสอบประวัติย้อนหลัง
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. กำหนดให้ SupplierName เป็น Primary Key ร่วมกับ ProductID เพื่อป้องกันไม่ให้ข้อมูลในตารางเกิดความผิดพลาดระหว่างการอัปเดต</p>
+      <p style="margin: 0; line-height: 1.4;">ข. เปลี่ยนค่า Domain ของ SupplierName ให้เป็นตัวเลขรหัสลับเพื่อประหยัดพื้นที่ในการจัดเก็บในฮาร์ดดิสก์</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ทำการรวมตารางทั้งหมดเข้ากับตาราง Category เพื่อให้เห็นภาพรวมของสินค้าทั้งหมดและค้นหาได้เร็วขึ้น</p>
+      <p style="margin: 0; line-height: 1.4;">ง. แยกข้อมูล SupplierID และ SupplierName ไปสร้าง Entity ใหม่ชื่อ 'Suppliers' และคงเหลือไว้เพียง SupplierID ในตารางเดิม</p>
+    </div>
+  </div> 
 
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เลือกสินค้าที่มีบันทึกเพิ่มสินค้า แล้วตัดสินค้าที่มีประวัติลบออกโดยใช้ NOT IN
 
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ใช้ LIKE ตรวจชื่อสินค้า แล้วใช้ BETWEEN ตรวจปีโดยไม่พิจารณาประเภทการเคลื่อนไหว
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้ DISTINCT แสดงชื่อสินค้าเพื่อลดข้อมูลซ้ำจาก stock_log
-</p>
-  </div>
 
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    32. ผู้ดูแลฐานข้อมูลต้องการแก้ไขโครงสร้างตาราง employee โดยเพิ่มคอลัมน์ salary และตั้งค่าให้ไม่สามารถเป็นค่าว่างได้ หลังจากนั้นต้องการลบตาราง temporary_employee ออกจากระบบอย่างถาวร โดยไม่สนข้อมูลภายในตารางดังกล่าว
-ลำดับแนวคิดใดถูกต้องที่สุด
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      16. ระบบโรงพยาบาลพบปัญหาข้อมูลกำพร้า (Orphan Data) หรือข้อมูลไม่สอดคล้องกันเมื่อแพทย์ลาออก<br>
+      เนื่องจากการอัปเดตรหัสแพทย์ในตารางคนไข้ไม่ครบทุกแถว สถานการณ์นี้สะท้อนถึงความล้มเหลว<br>
+      ในการจัดการคำศัพท์ฐานข้อมูลตัวใดมากที่สุด และนักศึกษาควรใช้กลไกใดมาควบคุมเพื่อบังคับ<br>
+      ไม่ให้เกิดปัญหาความไม่สอดคล้องของข้อมูลดังกล่าวภายในระบบฐานข้อมูลของโรงพยาบาล
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ลบข้อมูลในตารางชั่วคราวทั้งหมด แล้วค่อยเพิ่มคอลัมน์
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ดรอปตารางชั่วคราวก่อน เพื่อป้องกันความซ้ำซ้อนของโครงสร้าง
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แก้ไขโครงสร้างตารางหลักก่อน แล้วจึงดรอปตารางที่ไม่ต้องการ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. สร้างตารางใหม่แทน แล้วลบตารางเดิมทั้งหมด
-</p>
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ความล้มเหลวในการใช้คีย์รอง (Secondary Key) และต้องใช้การเพิ่มจำนวน Tuple ในตารางหมอ</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ความล้มเหลวในการจัดการ Foreign Key และต้องใช้กฎ Referential Integrity ในการควบคุม</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ความล้มเหลวในการกำหนด Domain ของข้อมูล และต้องใช้การกำหนด Cardinality แบบ Many-to-Many</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ความล้มเหลวในการกำหนด Primary Key และต้องใช้การเพิ่ม Degree ของ Entity เพื่อเก็บข้อมูลเพิ่ม</p>
+    </div>
   </div>
 
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    33. องค์กรหนึ่งมีตาราง project ใช้เก็บข้อมูลโครงการ และตาราง project_log ใช้เก็บประวัติการแก้ไขโครงการ ผู้ดูแลระบบต้องการเพิ่มคอลัมน์ project_status ลงในตาราง project โดยกำหนดว่าไม่อนุญาตให้เป็นค่าว่าง และต้องไม่กระทบต่อข้อมูลเดิมที่มีอยู่ในระบบ หากในตาราง project มีข้อมูลจำนวนมากอยู่แล้ว การเลือกแนวคิดใดเหมาะสมที่สุดเพื่อหลีกเลี่ยงข้อผิดพลาด
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      17. พิจารณาตาราง 'ORDERS' ที่มีข้อมูลดังนี้:<br>
+      <div style="margin: 10px 0 10px 20px; font-weight: normal; font-size: 1.15rem;">
+        • OrderID (PK)<br>
+        • OrderDate<br>
+        • CustomerID (FK)<br>
+        • TotalAmount
+      </div>
+      นักวิเคราะห์ระบบพบว่าในบางครั้ง ระบบอนุญาตให้บันทึก OrderID เป็นค่าว่าง (NULL)<br>
+      หรือค่าที่ซ้ำกันได้ การกระทำนี้ถือเป็นการละเมิดกฎเหล็กของ 'Primary Key' ในด้านใด<br>
+      และจะส่งผลกระทบต่อความถูกต้องของคำศัพท์ตัวใดในเชิงปริมาณข้อมูลในระบบ
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เพิ่มคอลัมน์โดยไม่กำหนดเงื่อนไขใด ๆ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ดรอปตารางแล้วสร้างใหม่พร้อมคอลัมน์ครบ
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ลบข้อมูลเดิมออกก่อนแล้วค่อยเพิ่มคอลัมน์
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. เพิ่มคอลัมน์ก่อนโดยกำหนดค่าเริ่มต้นให้ทุกแถว
-</p>
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    34. ตาราง supplier เก็บข้อมูลผู้ขาย และตาราง delivery เก็บข้อมูลการส่งสินค้า ผู้ดูแลต้องการแสดงรายชื่อผู้ขายที่ไม่เคยมีประวัติการส่งสินค้าเลย โดยใช้ NOT IN เชื่อมกับตาราง delivery หากในตาราง delivery มีแถวที่ supplier_id เป็นค่าว่าง จะส่งผลต่อผลลัพธ์อย่างไร
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ละเมิดกฎ Domain Integrity และส่งผลกระทบต่อการนับจำนวน Degree ของตาราง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ละเมิดกฎความสัมพันธ์แบบ 1:N และส่งผลกระทบต่อพื้นที่ว่างในหน่วยความจำ (Storage)</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ละเมิดกฎ Entity Integrity และส่งผลกระทบต่อความถูกต้องของ Cardinality ในระบบ</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ละเมิดกฎการสืบทอดข้อมูล และส่งผลกระทบต่อการสร้าง Foreign Key ในตารางพนักงาน</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ผลลัพธ์อาจไม่แสดงข้อมูลใดเลย
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ผลลัพธ์จะถูกต้องตามปกติ
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. แสดงเฉพาะผู้ขายที่มีข้อมูลซ้ำ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. แสดงเฉพาะผู้ขายรายแรก
-</p>
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    35. ระบบขายสินค้าออนไลน์บันทึกคำสั่งซื้อของลูกค้า โดยต้องการแสดงรายชื่อลูกค้าที่มีคำสั่งซื้อในช่วงปี 2020 ถึง 2024 อย่างน้อยหนึ่งครั้ง และใน ทุกคำสั่งซื้อที่เกิดขึ้นในช่วงนี้ ต้องมีสถานะชำระเงินเรียบร้อย หากลูกค้ารายใดมีคำสั่งซื้อค้างชำระเพียงครั้งเดียวในช่วงปีดังกล่าว จะต้องถูกตัดออก แม้ว่านอกช่วงปีนี้จะมีสถานะใดก็ตาม
-ข้อใดสะท้อนเงื่อนไขนี้ได้ครบ
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      18. พิจารณาสถานการณ์การออกแบบฐานข้อมูลของบริษัทประกันภัยดังนี้ :<br>
+      <div style="margin: 10px 0 10px 20px; font-weight: normal; font-size: 1.15rem;">
+        • ผู้เอาประกัน 1 คน สามารถถือครองกรมธรรม์ได้หลายฉบับ<br>
+        • กรมธรรม์ 1 ฉบับ จะระบุชื่อผู้เอาประกันได้เพียงคนเดียวเท่านั้น
+      </div>
+      หากทีมออกแบบนำ Primary Key ของตารางผู้เอาประกัน ไปวางไว้ในตารางกรมธรรม์<br>
+      การกระทำในลักษณะนี้เรียกว่าการสร้างคีย์ประเภทใด และสอดคล้องกับรูปแบบ<br>
+      Cardinality Ratio แบบใดมากที่สุดตามหลักการของฐานข้อมูลเชิงสัมพันธ์
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เลือกเฉพาะคำสั่งซื้อที่จ่ายแล้ว
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ตัดลูกค้าที่ผิดเงื่อนไขในช่วงปี
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. เลือกลูกค้าที่ไม่มีค้างชำระ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ดูเฉพาะคำสั่งซื้อล่าสุด
-</p>
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    36. ระบบประเมินผลใช้ช่วงคะแนน BETWEEN 60 AND 80 เพื่อตรวจสอบผู้ผ่านระดับกลาง หากนำเงื่อนไขนี้ไปใช้ร่วมกับเงื่อนไขอื่นแล้วพบว่ามีผู้ได้คะแนน 60 และ 80 ปรากฏในผลลัพธ์
-ข้อใดอธิบายปรากฏการณ์นี้ได้ถูกต้อง
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. สร้าง Foreign Key และสอดคล้องกับความสัมพันธ์แบบ One-to-Many (1:M)</p>
+      <p style="margin: 0; line-height: 1.4;">ข. สร้าง Secondary Key และสอดคล้องกับความสัมพันธ์แบบ One-to-One (1:1)</p>
+      <p style="margin: 0; line-height: 1.4;">ค. สร้าง Primary Key ร่วม (Composite Key) และสอดคล้องกับความสัมพันธ์แบบ Many-to-Many (M:N)</p>
+      <p style="margin: 0; line-height: 1.4;">ง. สร้าง Domain Key และสอดคล้องกับความสัมพันธ์แบบ Recursive</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. การจัดลำดับ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ค่าถูกปัด
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. รวมค่าขอบเขต
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ชนิดข้อมูล
-  </div>
-
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    37. ระบบบริหารบุคลากรขององค์กรแห่งหนึ่งเก็บข้อมูลพนักงานไว้ในตาราง employee 
-  โดยระบุชื่อพนักงานและสถานะการทำงาน และเก็บประวัติการทำงานไว้ในตาราง work_history 
-  ซึ่งบันทึกชื่อโครงการและปีที่ทำงาน ฝ่ายตรวจสอบต้องการรายชื่อพนักงานที่ยังมีสถานะทำงานอยู่ในปัจจุบัน 
-  เคยทำงานในโครงการที่มีคำว่า “ระบบ” อยู่ในชื่ออย่างน้อยหนึ่งครั้ง ระหว่างปี 2021 ถึง 2023 
-  และต้องแสดงรายชื่อพนักงานทั้งหมดที่เข้าเงื่อนไขนี้ อย่างไรก็ตาม 
-  หากพนักงานรายใดไม่เคยมีประวัติการทำงานเลย 
-  ก็ต้องยังปรากฏอยู่ในผลลัพธ์ด้วยในกรณีที่สถานะยังทำงานอยู่<br>
-  พิจารณาโค้ดต่อไปนี้<br>
-  SELECT employee.employee_name<br>
-FROM employee<br>
-LEFT JOIN work_history<br>
-ON employee.employee_number = work_history.employee_number
-<br>WHERE employee.employee_status = 'active'<br>
-AND work_history.work_year BETWEEN 2021 AND 2023<br>
-AND work_history.project_name LIKE '%ระบบ%';<br>
-ปัญหาหลักของโค้ดนี้คือข้อใด
-  </div>
-
-  
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เงื่อนไขใน WHERE
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เงื่อนไขใน BETWEEN
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. เงื่อนไขใน JOIN
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. การใช้ LIKE
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    38. ระบบคลังเอกสารขององค์กรเก็บข้อมูลเอกสารไว้ในตาราง document และเก็บข้อมูลผู้จัดทำเอกสารไว้ในตาราง author ฝ่ายตรวจสอบคุณภาพต้องการรายชื่อเอกสารที่ถูกสร้างขึ้นในช่วงปี 2022 ถึง 2024 
-    และมีชื่อผู้จัดทำปรากฏอยู่ในระบบอย่างถูกต้อง แต่ไม่ต้องการเอกสารใด ๆ ที่ผู้จัดทำเคยมีประวัติถูกลบออกจากระบบมาก่อน แม้ว่าปัจจุบันจะถูกเพิ่มกลับเข้ามาใหม่แล้วก็ตาม<br>
-    SELECT document_title<br>
-FROM document<br>
-JOIN author<br>
-WHERE document_year BETWEEN 2022 AND 2024;<br>
-ข้อใดอธิบายได้ดีที่สุดว่าทำไมผลลัพธ์จากโค้ดจึงไม่ตรงตามความต้องการ
-
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      19. พิจารณา Attribute 'Salary' ในตารางพนักงาน หากมีการกำหนดค่าข้อมูลไว้ได้ตั้งแต่<br>
+      15,000 ถึง 100,000 บาทเท่านั้น ข้อจำกัดในลักษณะนี้ตามเนื้อหาบทที่ 3 เรียกว่าอะไร<br>
+      และหากพนักงานบางคนยังไม่มีการระบุเงินเดือนเนื่องจากอยู่ในระหว่างช่วงทดลองงาน<br>
+      ระบบควรยอมให้ช่องข้อมูลนี้มีค่าเป็นอะไรเพื่อให้ถูกต้องตามหลักการบริหารจัดการข้อมูล
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. การเชื่อมตารางทำให้ข้อมูลหาย
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ช่วงปีเลือกกว้างเกินไป
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ไม่ได้ตรวจสอบประวัติการถูกลบ
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ชื่อเอกสารไม่ถูกกรอง
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    39. ตาราง order_record ใช้ order_number เป็นแพเมรีคีย์ และตาราง payment ใช้ order_number เป็นฟอเรนต์คีย์ หากพบว่ามีข้อมูลใน payment ที่ไม่สามารถเชื่อมกับ order_record ได้ ข้อใดอธิบายสาเหตุได้เหมาะสมที่สุด
-
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. เรียกว่า Tuple และควรยอมให้ป้อนตัวเลขใดก็ได้ไปก่อนแล้วค่อยกลับมาแก้ไขในภายหลัง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. เรียกว่า Domain และควรยอมให้เป็นค่า NULL หากไม่ขัดต่อกฎเกณฑ์ของ Primary Key</p>
+      <p style="margin: 0; line-height: 1.4;">ค. เรียกว่า Degree และควรยอมให้ใส่ข้อความ 'Pending' เพื่อเป็นการสื่อสารกับผู้ใช้งาน</p>
+      <p style="margin: 0; line-height: 1.4;">ง. เรียกว่า Cardinality และควรยอมให้เป็นค่าศูนย์ (0) เพื่อให้ระบบสามารถคำนวณได้ง่าย</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. แพเมรีคีย์ถูกกำหนดผิดชนิดข้อมูล
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ไม่มีการบังคับใช้ฟอเรนต์คีย์
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ตาราง payment ถูกสร้างก่อน
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ข้อมูลซ้ำใน order_record
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    40. ระบบหนึ่งกำหนดให้ตาราง registration ใช้ registration_number เป็นแพเมรีคีย์ และใช้ student_number เป็นฟอเรนต์คีย์อ้างอิงไปยัง student หากมีการเปลี่ยนค่า student_number ในตาราง student โดยตรง สิ่งใดควรถูกพิจารณามากที่สุด
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      20. บริษัทขนส่งออกแบบฐานข้อมูล 'พัสดุ' (Package) และ 'สถานะ' (Status) โดยมีเงื่อนไขคือ<br>
+      พัสดุ 1 ชิ้นมีได้หลายสถานะตามเวลา และสถานะ 1 อย่างสามารถใช้กับพัสดุได้หลายชิ้น<br>
+      หากต้องการเก็บข้อมูล 'เวลาที่เปลี่ยนสถานะ' (Timestamp) เพิ่มเติมลงในระบบฐานข้อมูล<br>
+      ท่านจะวิเคราะห์ Cardinality และโครงสร้างการจัดเก็บข้อมูลนี้ได้อย่างไรจึงจะถูกต้องที่สุด
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ความสอดคล้องของข้อมูลที่เชื่อมโยง
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ความเร็วในการค้นหา
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ขนาดของตาราง
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. จำนวนแถวที่ถูกกระทบ
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    41. หากนักพัฒนาต้องการสร้างส่วนของหน้าจอที่สามารถนำกลับมาใช้ซ้ำได้หลายๆ ครั้งในโปรเจกต์ ตามปรัชญาของ React ควรเลือกใช้แนวคิดใดเป็นหลัก
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. เป็นความสัมพันธ์แบบ One-to-One (1:1) เพราะพัสดุหนึ่งชิ้นมีได้เพียงหนึ่งสถานะ ณ เวลาใดเวลาหนึ่ง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. เป็นความสัมพันธ์แบบ One-to-Many (1:N) โดยเลือกเก็บ Timestamp ไว้ในตารางพัสดุเพื่อประหยัดพื้นที่</p>
+      <p style="margin: 0; line-height: 1.4;">ค. เป็นความสัมพันธ์แบบ Recursive เพราะสถานะเก่าจะส่งต่อข้อมูลให้สถานะใหม่ภายในเอนทิตี้เดียวกันเสมอ</p>
+      <p style="margin: 0; line-height: 1.4;">ง. เป็นความสัมพันธ์แบบ Many-to-Many (M:N) และต้องเก็บ Timestamp ไว้ในตารางกลางที่สร้างขึ้นใหม่</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. Babel Compiler Architecture
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. Functional State Pattern
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. API Connection Pattern
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. Component-based Architecture
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    42. ข้อใดกล่าวถึงบทบาทของ JSX ในการพัฒนา React ได้ถูกต้องที่สุด
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      21. สมมติว่าท่านลบข้อมูล 'แผนกการตลาด' ออกจากตาราง DEPARTMENTS แต่ในตารางพนักงาน<br>
+      ยังมีพนักงานหลายคนที่ถือ Foreign Key อ้างอิงถึงรหัสแผนกที่เพิ่งถูกลบทิ้งไปนั้นอยู่<br>
+      ตามทฤษฎีการจัดการความสัมพันธ์ เหตุการณ์นี้จะทำให้เกิดปัญหาที่เรียกว่าอะไร<br>
+      และสะท้อนถึงการขาดการบังคับใช้กฎ (Constraint) ของคำศัพท์ตัวใดในระบบฐานข้อมูล
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เป็นเครื่องมือหลักที่ใช้ในการดึงข้อมูลจาก Server แทน Fetch API
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เป็นรูปแบบการเขียนโค้ดที่ช่วยให้จัดการ UI ได้สะดวกและอ่านง่ายขึ้น
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. เป็นภาษาโปรแกรมใหม่ที่ Facebook สร้างขึ้นเพื่อมาแทนที่ JavaScript
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. เป็น Library เสริมที่ต้องติดตั้งแยกต่างหากจาก React เสมอ
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    43. ทำไม Babel Compiler จึงมีความสำคัญอย่างยิ่งในกระบวนการพัฒนาด้วย React
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. เกิดปัญหา Referential Integrity เนื่องจากมีคีย์นอกที่ชี้ไปยังข้อมูลที่ไม่มีอยู่จริงในตารางหลัก</p>
+      <p style="margin: 0; line-height: 1.4;">ข. เกิดปัญหา Cardinality Explosion เนื่องจากพนักงานจะเพิ่มจำนวนขึ้นเพื่อชดเชยแผนกที่หายไป</p>
+      <p style="margin: 0; line-height: 1.4;">ค. เกิดปัญหา Domain Overflow เนื่องจากค่าของรหัสแผนกเดิมเกินกว่าขอบเขตที่กำหนดไว้ในระบบ</p>
+      <p style="margin: 0; line-height: 1.4;">ง. เกิดปัญหา Degree Mismatch เนื่องจากจำนวนคอลัมน์ในสองตารางไม่เท่ากันหลังจากทำการลบข้อมูล</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. ช่วยในการเก็บสถานะ (State) ของ Component ให้เป็นปัจจุบัน
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. แปลงโค้ด JSX และ ES6+ ให้เป็นภาษาที่เบราว์เซอร์ทั่วไปสามารถเข้าใจได้
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ทำหน้าที่เป็น Web Server สำหรับแสดงผลหน้าเว็บไซต์
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ใช้สำหรับเชื่อมต่อ API จาก Server แบบ Real-time
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    44. หากท่านต้องการจัดการข้อมูลที่ 'เปลี่ยนแปลงได้แบบไดนามิก' ภายใน Component หนึ่งๆ ท่านควรใช้เครื่องมือใด
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      22. คำว่า 'ดีกรี' (Degree) และ 'คาร์ดินัลลิตี้' (Cardinality) เป็นตัววัดเชิงปริมาณของรีเลชั่น<br>
+      หากนักศึกษาลบ 'คอลัมน์เบอร์โทรศัพท์' ออกจากตารางลูกค้า และทำการเพิ่มแถวข้อมูล<br>
+      พนักงานใหม่เข้าไปในระบบจำนวน 5 ราย การเปลี่ยนแปลงของค่าดัชนีวัดทั้งสองตัวนี้<br>
+      จะมีทิศทางเป็นอย่างไรตามหลักการวัดโครงสร้างทางตรรกะของฐานข้อมูลเชิงสัมพันธ์
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. State Management
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. Props
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. Babel
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. Webpack
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ค่า Degree เพิ่มขึ้น 5 และค่า Cardinality ลดลง 1 </p>
+      <p style="margin: 0; line-height: 1.4;">ข. ไม่มีการเปลี่ยนแปลงใดๆ เพราะระบบฐานข้อมูลจะรักษาความสมดุลของโครงสร้างไว้เสมอ</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ค่า Degree ลดลง 1 และค่า Cardinality เพิ่มขึ้น 5 </p>
+      <p style="margin: 0; line-height: 1.4;">ง. ทั้งค่า Degree และค่า Cardinality จะเพิ่มขึ้นตามปริมาณข้อมูลทั้งหมดที่ถูกใส่เข้าไปในระบบ</p>
+    </div>
   </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    45. 
-React Hook ตัวใดที่ออกแบบมาเพื่อจัดการ Side Effects โดยเฉพาะ
+
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      23. บริษัทโลจิสติกส์พัฒนาระบบติดตามพัสดุ โดยพัสดุหนึ่งชิ้นต้องผ่านหลายสถานะขนส่ง<br>
+      และสถานะหนึ่งก็เกิดกับพัสดุได้หลายชิ้น ทีมออกแบบจึงสร้างตารางกลางชื่อ 'Package_Logs'<br>
+      หากต้องการเก็บข้อมูล 'ชื่อพนักงาน' และ 'เวลาที่อัปเดต' ในแต่ละขั้นตอนการขนส่ง<br>
+      ท่านวิเคราะห์ว่า Attribute ทั้งสองนี้ควรถูกนิยามไว้ในโครงสร้างใดจึงจะถูกต้องที่สุด
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. useHistory
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. useState
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. useContext
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. useEffect
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    46. ข้อใดอธิบายความสัมพันธ์ระหว่าง React และ Facebook ได้ถูกต้องที่สุด
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. นิยามไว้ในรีเลชั่น 'Package_Logs' เนื่องจากเป็นข้อมูลที่เกิดจากการปฏิสัมพันธ์ในช่วงเวลานั้น</p>
+      <p style="margin: 0; line-height: 1.4;">ข. นิยามไว้ในเอนทิตี้ 'Package' เนื่องจากพนักงานและเวลาเป็นคุณลักษณะที่ผูกติดอยู่กับตัวพัสดุโดยตรง</p>
+      <p style="margin: 0; line-height: 1.4;">ค. แยกออกเป็นเอนทิตี้อิสระชื่อ 'WorkLog' โดยไม่ต้องใช้ Foreign Key เพื่อเพิ่มประสิทธิภาพในการเขียน</p>
+      <p style="margin: 0; line-height: 1.4;">ง. นิยามไว้ในเอนทิตี้ 'ShipmentStatus' เพื่อให้ง่ายต่อการตรวจสอบการใช้งานของพนักงานแต่ละคน</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. React เป็น JavaScript Library ที่พัฒนาโดย Facebook
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. React เป็นระบบปฏิบัติการที่ Facebook สร้างมาแข่งกับ Windows
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. Facebook บังคับให้ทุกคนที่ใช้ Facebook ต้องเขียน React
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. Facebook ซื้อกิจการ React มาจากบริษัทอื่น
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    47. ข้อใดคือนามสกุลของไฟล์โค้ด React
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      24. สถาบันการเงินพบปัญหาข้อมูลไม่สอดคล้องกัน เนื่องจากมีการลบข้อมูลลูกค้าออกไป<br>
+      แต่ในตารางบัญชีเงินกู้ยังมีรหัสลูกค้านั้นค้างอยู่ ทำให้ไม่สามารถระบุเจ้าของบัญชีได้<br>
+      นักศึกษาจะใช้หลักการ 'Integrity Rule' ใดมาแก้ปัญหาเพื่อบังคับการตรวจสอบข้อมูล<br>
+      ก่อนการลบ และกฎเกณฑ์ดังกล่าวต้องทำงานควบคู่กับคีย์ประเภทใดในระบบฐานข้อมูล
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. .REC
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. .JSX
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. .REX
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. .JS
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    48. Docker คืออะไร และทำไมจึงเป็นที่นิยมในการส่งมอบซอฟต์แวร์ในปัจจุบัน
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ใช้กฎ Domain Integrity ทำงานร่วมกับ Attribute เพื่อจำกัดประเภทข้อมูลรหัสลูกค้าให้ถูกต้อง</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ใช้กฎ Referential Integrity ทำงานร่วมกับ Foreign Key เพื่อป้องกันการลบข้อมูลต้นทางที่มีการอ้างอิงอยู่</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ใช้กฎ Cardinality Constraint ทำงานร่วมกับตารางกลางเพื่อจำกัดจำนวนบัญชีต่อลูกค้าหนึ่งคน</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ใช้กฎ Entity Integrity ทำงานร่วมกับ Primary Key เพื่อบังคับให้รหัสลูกค้าห้ามเป็นค่าว่างโดยเด็ดขาด</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เป็นภาษาโปรแกรมชนิดใหม่ที่ใช้เขียนแทน JavaScript เพื่อให้รันบน Server ได้เร็วขึ้น
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. เป็นแพลตฟอร์มที่ช่วยจำลองสภาพแวดล้อมของแอปพลิเคชันให้อยู่ในรูปแบบ Container
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. เป็นฐานข้อมูล Cloud ขนาดใหญ่ที่ใช้เก็บไฟล์ภาพ (Images) ของผู้ใช้งานทั่วไป
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. เป็นเครื่องมือสำหรับออกแบบ UI/UX ที่ทำงานได้เร็วกว่า React
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    49. ข้อใดกล่าวถึงความสัมพันธ์ระหว่าง Portainer และ Docker Compose ได้ถูกต้องที่สุด
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      25. เจ้าหน้าที่พยายามเปลี่ยนรหัสวิชา 'DB-101' เป็น 'DB-202' ในตาราง Courses แต่ระบบ<br>
+      ไม่ยอมให้เปลี่ยนเนื่องจากมีนักศึกษาลงทะเบียนในรหัสนั้นอยู่แล้วในตาราง Enrollments<br>
+      เหตุการณ์นี้แสดงว่าระบบใช้กลไก Referential Integrity ในรูปแบบใด และหากต้องการ<br>
+      ให้รหัสในตารางลงทะเบียนเปลี่ยนตามโดยอัตโนมัติ ต้องกำหนดเงื่อนไขอย่างไรจึงจะเหมาะสม
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. Docker Compose คือโปรแกรมที่ถูกสร้างมาเพื่อกำจัด Portainer ทิ้ง
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. Portainer ไม่สามารถอ่านไฟล์ Docker Compose ได้ ต้องพิมพ์คำสั่งเองเท่านั้น
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ต้องลบ Docker Compose ออกจากเครื่องก่อนจึงจะติดตั้ง Portainer ได้
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. Portainer มี Stacks ช่วยให้ Deploy Docker Compose ได้ง่าย
-  </div>
-  </div> <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; box-shadow: var(--shadow);">
-  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
-    50. ความปลอดภัยเบื้องต้นที่ควรทำทันทีหลังจาก Deploy Portainer เสร็จสิ้นคือข้อใด
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ปัจจุบันใช้รูปแบบ NO ACTION; และหากต้องการให้เปลี่ยนตามต้องตั้งค่าเป็น ON DELETE CASCADE</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ปัจจุบันใช้รูปแบบ DEFAULT; และหากต้องการให้เปลี่ยนตามต้องใช้กฎ Entity Integrity เข้าช่วยในการจัดการ</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ปัจจุบันใช้รูปแบบ SET NULL; และหากต้องการให้เปลี่ยนตามต้องตั้งค่าเป็น ON UPDATE RESTRICT</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ปัจจุบันใช้รูปแบบ RESTRICT; และหากต้องการให้เปลี่ยนตามต้องตั้งค่าเป็น ON UPDATE CASCADE</p>
+    </div>
   </div>
   
-  <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
-    <p style="margin: 0; line-height: 1.4;">ก. เปลี่ยนชื่อโปรแกรมจาก Portainer เป็นชื่ออื่นเพื่อพรางตา
-</p>
-    <p style="margin: 0; line-height: 1.4;">ข. ปิดการเชื่อมต่ออินเทอร์เน็ตของเครื่อง Server ตลอดกาล
-
-</p>
-    <p style="margin: 0; line-height: 1.4;">ค. ตั้งรหัสผ่าน Admin ทันทีที่เข้าหน้าเว็บครั้งแรก
-</p>
-    <p style="margin: 0; line-height: 1.4;">ง. ลบไฟล์ Docker ทั้งหมดทิ้งเพื่อป้องกันการแฮ็ก
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      26. ในรีเลชั่น 'Students' กำหนดให้ ID เป็น Primary Key และ Email เป็น Unique Constraint<br>
+      โดยระบบยอมให้ Email เป็น NULL ได้ในกรณีที่นักศึกษายังไม่มีข้อมูลอีเมล ณ ขณะที่สมัครเรียน<br>
+      สถานการณ์นี้สะท้อนถึงความแตกต่างของกฎความถูกต้อง (Integrity Rule) ในข้อใดชัดเจนที่สุด<br>
+      และหากมีนักศึกษาคนที่สองที่ไม่มีอีเมลเข้ามาเพิ่มอีก ระบบจะยอมให้ค่าเป็น NULL ได้หรือไม่
+  </div>
+  
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. ID ติดกฎ Domain Integrity; และระบบจะบังคับให้ใส่ค่าว่าง (Empty String) แทนค่า NULL เสมอ</p>
+      <p style="margin: 0; line-height: 1.4;">ข. ID ติดกฎ Entity Integrity; และระบบยอมให้มี NULL ในช่อง Email ได้หลายครั้งเพราะ NULL ไม่ใช่ค่าซ้ำ</p>
+      <p style="margin: 0; line-height: 1.4;">ค. ทั้งคู่ติดกฎ Referential Integrity; และระบบจะไม่อนุญาตให้เป็น NULL อีกเพราะจะผิดกฎการซ้ำซ้อน</p>
+      <p style="margin: 0; line-height: 1.4;">ง. ทั้งคู่ติดกฎ Business Logic Integrity; และระบบจะทำการลบข้อมูลทิ้งโดยอัตโนมัติหากไม่มีการระบุค่า</p>
+    </div>
+  </div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+      <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+      27. ในตาราง 'พนักงาน' กำหนดให้ 'เลขที่บัตรประชาชน' เป็น Primary Key ต่อมาพบพนักงาน<br>
+      ชาวต่างชาติที่ไม่มีเลขดังกล่าว ระบบจึงปฏิเสธการเพิ่มข้อมูล แม้จะพยายามเว้นว่างไว้ก็ตาม<br>
+      เหตุการณ์ที่ระบบไม่ยอมให้เว้นว่างข้อมูลในส่วนที่เป็นคีย์หลักนี้ สะท้อนถึงการบังคับใช้กฎ<br>
+      ความถูกต้องของข้อมูล (Integrity Rule) ในรูปแบบใดที่สำคัญที่สุดในระบบฐานข้อมูล
+  </div>
+  
+    <div class="options-container" style="display: flex; flex-direction: column; gap: 8px;">
+      <p style="margin: 0; line-height: 1.4;">ก. Entity Integrity: ควบคุมความไม่ซ้ำและบังคับห้ามเป็นค่าว่าง (NOT NULL) สำหรับคีย์หลัก</p>
+      <p style="margin: 0; line-height: 1.4;">ข. Domain Integrity: ควบคุมขอบเขตและชนิดของข้อมูลให้ตรงตามประเภทที่กำหนดไว้ในระบบ</p>
+      <p style="margin: 0; line-height: 1.4;">ค. User-defined Integrity: กฎเกณฑ์ที่ผู้ใช้งานหรือผู้ออกแบบกำหนดขึ้นเองเพิ่มเติมตามเงื่อนไขธุรกิจ</p>
+      <p style="margin: 0; line-height: 1.4;">ง. Referential Integrity: ควบคุมความถูกต้องของการอ้างอิงข้อมูลระหว่างตารางหลักและตารางรอง</p>
+    </div>
+  </div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    28. บริษัทขนส่งข้ามชาติแห่งหนึ่งพัฒนาระบบจัดการฐานข้อมูลใหม่เพื่อจัดเก็บข้อมูลพนักงาน (Staff)<br>
+    โดยกำหนดให้ 'Staff_ID' เป็น Primary Key และมีคอลัมน์ 'Passport_Number' เป็นคีย์สำรอง<br>
+    ต่อมาบริษัทขยายสาขาไปยังประเทศที่สามซึ่งพนักงานบางส่วนไม่มีหนังสือเดินทาง เมื่อเจ้าหน้าที่<br>
+    พยายามบันทึกข้อมูลโดยเว้นว่างช่อง 'Passport_Number' ระบบกลับปฏิเสธการบันทึกข้อมูล<br>
+    ในขณะเดียวกัน เมื่อพนักงานลาออกและถูกลบข้อมูลจากตารางหลัก พบว่ารหัสพนักงานในตาราง<br>
+    การเดินรถ (Logistics) ที่เคยอ้างถึงพนักงานคนนั้นกลับกลายเป็นค่าว่างทั้งหมดจนเสียประวัติ<br>
+    จากสถานการณ์นี้นักศึกษาวิเคราะห์ว่าระบบกำลังเผชิญกับปัญหาการละเมิดกฎ Integrity ในส่วนใด<br>
+    และแนวทางที่ถูกต้องในการจัดการกับพนักงานที่ไม่มีหนังสือเดินทางตามหลักการคือข้อใด
   </div>
 
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ระบบละเมิดกฎ User-defined Integrity เนื่องจากพนักงานต่างชาติมีโครงสร้างข้อมูลต่างกัน; แนวทางแก้ไขคือการยกเลิกคีย์หลัก Staff_ID แล้วเปลี่ยนไปใช้ชื่อ-นามสกุลร่วมกันเป็น Composite Key เพื่อให้รองรับค่าว่างได้ตามหลักการของฐานข้อมูลเชิงสัมพันธ์ที่ยืดหยุ่น</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ระบบละเมิดกฎ Domain Integrity เพราะเลขพาสปอร์ตเป็นค่าว่าง และใช้วิธี NO ACTION ในการจัดการตารางลูก; แนวทางแก้ไขคือการสร้างตารางพนักงานแยกออกเป็นสองชุด คือพนักงานที่มีพาสปอร์ตและไม่มีพาสปอร์ต เพื่อให้สอดคล้องกับคุณสมบัติ Atomic Value ของรีเลชั่น</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ระบบละเมิดกฎ Entity Integrity ในคอลัมน์ Passport_Number และใช้วิธี SET NULL ในการลบพนักงาน; แนวทางแก้ไขคือควรกำหนดให้ Passport_Number ยอมรับค่า NULL ได้เพราะไม่ใช่ Primary Key และเปลี่ยนวิธีจัดการข้อมูลปลายทางเป็น RESTRICT เพื่อรักษาประวัติการทำงานไว้</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ระบบละเมิดกฎ Referential Integrity ในคอลัมน์ Staff_ID และใช้วิธี CASCADE ในการลบข้อมูล; แนวทางแก้ไขคือต้องบังคับให้ทุกคนมีเลขพาสปอร์ตโดยการสุ่มตัวเลขชั่วคราวใส่ลงไปเพื่อให้ผ่านกฎ Domain Integrity และรักษาความสอดคล้องของข้อมูลในระดับกายภาพ</p>
+  </div>
 </div>
 
 
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    29. สมมติว่าคุณกำลังออกแบบฐานข้อมูลให้กับร้านค้าปลีกที่มีหลายสาขา โดยมีตาราง <br>Products
+    {ProductID, PName, Category, Price, Stock} และตาราง Branches{BranchID, Location, Manager}<br>
+    ในการเชื่อมโยงข้อมูล คุณได้สร้างตารางกลางชื่อ 'Inventory_Link' เพื่อจัดเก็บข้อมูลสินค้าในแต่ละสาขา<br>
+    โดยกำหนดให้ ProductID และ BranchID ร่วมกันเป็น Primary Key (Composite Key) ต่อมาเจ้าหน้าที่<br>
+    พยายามเพิ่มรายการสินค้าใหม่โดยระบุเพียง ProductID และเว้นว่างช่อง BranchID ไว้เพื่อเติมทีหลัง<br>
+    แต่ระบบ RDBMS ปฏิเสธการบันทึกข้อมูลทันที สถานการณ์นี้สะท้อนให้เห็นถึงข้อจำกัดในเรื่องใด<br>
+    และเหตุใดระบบถึงไม่อนุญาตให้ดำเนินการแม้ว่า BranchID จะเป็นคีย์นอกที่อ้างอิงไปยังอีกตารางก็ตาม
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ละเมิดกฎ Referential Integrity เพราะระบบไม่สามารถตรวจสอบความสัมพันธ์ข้ามตารางได้หากคีย์ตัวใดตัวหนึ่งขาดหายไป ทำให้ข้อมูลในตาราง Inventory_Link กลายเป็นข้อมูลที่ไม่มีความสมบูรณ์เชิงกายภาพ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ละเมิดกฎ Entity Integrity เพราะเมื่อใดก็ตามที่แอทตริบิวต์หนึ่งถูกกำหนดให้เป็นส่วนหนึ่งของคีย์หลัก แอทตริบิวต์นั้นจะห้ามมีค่าเป็น NULL โดยเด็ดขาดไม่ว่าจะทำหน้าที่เป็นคีย์นอกด้วยหรือไม่</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ละเมิดกฎ Domain Integrity เนื่องจากค่า NULL ไม่ถูกนับรวมอยู่ในเซตของข้อมูลชนิดตัวเลขที่ใช้เก็บรหัสสาขา ส่งผลให้การประมวลผลในระดับชั้น Conceptual Schema เกิดความผิดพลาดขึ้น</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ละเมิดกฎคุณสมบัติของทูเพิล (Tuple Uniqueness) เพราะการมีค่าว่างในคีย์หลักจะทำให้ระบบไม่สามารถคัดแยกความแตกต่างระหว่างสินค้าแต่ละชิ้นในตารางได้ ส่งผลให้ Cardinality ของรีเลชั่นลดลง</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    30. ในการออกแบบระบบฐานข้อมูลการขายสินค้า พนักงานออกแบบได้กำหนดคุณสมบัติของตาราง 'Sales_Invoice' ไว้ดังนี้:<br>
+    Sales_Invoice{Invoice_No, Customer_ID, Sale_Date, Amount, Discount_Rate} โดยให้ Invoice_No เป็น Primary Key ต่อมาฝ่ายบัญชี
+    ให้กฎว่า Discount_Rate ต้องอยู่ระหว่าง 0.00 ถึง 0.50 เท่านั้น และห้ามปล่อยเป็นค่าว่าง หากไม่มีส่วนลดให้ใส่ 0.00
+    นอกจากนี้ เมื่อมีการลบข้อมูลลูกค้าออกจากระบบ ระบบจะต้องห้ามไม่ให้ลบเด็ดขาดหากลูกค้านั้นเคยมีประวัติการสั่งซื้อไปแล้ว
+    เพื่อความถูกต้องของ<br>ยอดขายย้อนหลัง นักศึกษาวิเคราะห์ได้ว่าข้อกำหนดเกี่ยวกับ Discount_Rate และข้อกำหนด<br>การลบลูกค้า
+    สอดคล้องกับคุณสมบัติใดของ Integrity Rules 
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Discount_Rate คือ User-defined Integrity และการห้ามลบลูกค้าคือ Domain Integrity เพราะเกี่ยวข้องกับสถานะของลูกค้าในระบบจัดการรีเลชั่น</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Discount_Rate คือ Domain Integrity (กฎความถูกต้องของโดเมน) และการห้ามลบลูกค้าคือ Referential Integrity ในรูปแบบ RESTRICT (หรือ NO ACTION)</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Discount_Rate คือ Referential Integrity เพราะต้องอ้างอิงจากนโยบายบริษัท และการห้ามลบลูกค้าคือ Entity Integrity เพราะต้องรักษาความไม่ซ้ำกันของรายการขาย</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Discount_Rate คือ Entity Integrity (กฎความถูกต้องของเอนทิตี้) และการห้ามลบลูกค้าคือ Referential Integrity ในรูปแบบ CASCADE</p>
+  </div>
+</div>
+  
+  
+  
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    31. จงพิจารณารีเลชั่น PROJECT_ASSIGN {Emp_ID, Proj_ID, Role, Join_Date} โดยกำหนดให้ Emp_ID และ Proj_ID<br>
+    ร่วมกันทำหน้าที่เป็น Primary Key หากในอนาคตต้องการเพิ่มข้อมูลแต่พนักงานยังไม่ได้รับมอบหมายเข้าโปรเจกต์ใดเลย
+    (Proj_ID ว่าง) หรือโปรเจกต์ยังไม่มีพนักงาน (Emp_ID ว่าง) แต่ผู้ใช้พยายามป้อนข้อมูลเพื่อจองสิทธิ์ไว้ก่อน ตามกฎความถูกต้อง
+    ของเอนทิตี้ (Entity Integrity) การกระทำนี้สามารถทำได้หรือไม่ และส่งผลต่อโครงสร้างความสัมพันธ์อย่างไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ทำไม่ได้ เพราะกฎ Entity Integrity ระบุว่าส่วนประกอบใดๆ ของคีย์หลักจะว่างเป็น NULL ไม่ได้เด็ดขาด เพราะจะทำให้ระบบสูญเสียความสามารถในการระบุตัวตนของแต่ละทูเพิล</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ทำได้เฉพาะกรณีที่ Proj_ID ว่าง แต่ Emp_ID ห้ามว่าง เพราะพนักงานเป็นวัตถุหลัก (Entity) ส่วนโปรเจกต์เป็นเพียงกิจกรรมที่เกิดขึ้นตามความสัมพันธ์แบบ M:N</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ทำได้ หากเรากำหนดให้แอทตริบิวต์ที่ว่างนั้นเป็นคีย์นอก (Foreign Key) ไปด้วย เพราะกฎ Referential Integrity ยืดหยุ่นกว่ากฎความถูกต้องของเอนทิตี้ในเชิงปฏิบัติ</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ทำไม่ได้ เพราะจะไปขัดกับคุณสมบัติ Atomic Value ของรีเลชั่นที่ระบุว่าข้อมูลแต่ละช่องต้องเป็นหนึ่งเดียวและไม่สามารถเป็นค่าว่างได้ตามหลักการคณิตศาสตร์ของเซต</p>
+  </div>
+</div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    32. ในการออกแบบรีเลชั่น 'Inventory' ของห้างสรรพสินค้าแห่งหนึ่ง มีแอทตริบิวต์ดังนี้ <br>{SKU, ItemName,
+    Supplier_ID, Min_Stock} ผู้ออกแบบกำหนดให้ SKU เป็น Primary Key และ Supplier_ID เป็น Foreign Key
+    อ้างอิงไปยังตารางคู่ค้า ต่อมามีการวิเคราะห์พบว่าหากเราต้องการใส่ข้อมูลสินค้าชนิดใหม่ที่ยังไม่รู้ว่าใครเป็นผู้ผลิต
+    (Supplier_ID ยังไม่มี) ระบบควรจะอนุญาตให้ป้อนข้อมูลได้หรือไม่ตามหลักการ Referential Integrity และมีเงื่อนไขอย่างไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ไม่อนุญาต เพราะจะทำให้รีเลชั่นนี้สูญเสียความเป็นเอกภาพ (Entity Integrity) และทำให้ไม่สามารถคำนวณจำนวนสินค้าแยกตามผู้ผลิตได้แม่นยำ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. อนุญาตให้เป็นค่าว่าง (NULL) ได้ ตราบเท่าที่ Supplier_ID ไม่ได้เป็นส่วนหนึ่งของคีย์หลักในตาราง Inventory เพื่อแสดงว่าสินค้านี้ยังไม่มีความสัมพันธ์กับคู่ค้าใดๆ</p>
+    <p style="margin: 0; line-height: 1.4;">ค. อนุญาตได้เฉพาะเมื่อเรากำหนดค่า Default ให้กับ Supplier_ID เป็นรหัสบริษัทตนเอง เพื่อป้องกันข้อมูลกำพร้าในระดับชั้น Physical Schema</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ไม่อนุญาตให้เป็น NULL เด็ดขาด เพราะคีย์นอกต้องมีค่าที่ปรากฏอยู่ในคีย์หลักของตารางแม่เสมอตามกฎ Referential Integrity ที่เคร่งครัด</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    33. กฎความถูกต้องของโดเมน (Domain Integrity) ไม่ได้ทำหน้าที่ตรวจสอบเพียงแค่ชนิดข้อมูล<br>
+    เท่านั้น แต่ยังรวมถึงกฎเกณฑ์อื่นๆ ด้วย ข้อใดต่อไปนี้เป็นการใช้กฎความถูกต้องของโดเมนที่ซับซ้อน<br>
+    และถูกต้องที่สุดตามหลักการกำหนดขอบเขตค่าของข้อมูลที่ยอมรับได้ในระบบรีเลชั่นแนล
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. การกำหนดว่า 'ชื่อพนักงาน' ห้ามซ้ำกับชื่อที่มีอยู่เดิมในตาราง และต้องไม่เป็นค่าว่างเพื่อให้สอดคล้องกับคุณสมบัติของเอนทิตี้</p>
+    <p style="margin: 0; line-height: 1.4;">ข. การกำหนดให้คอลัมน์ 'ราคาสินค้า' สามารถมีทศนิยมได้ 2 ตำแหน่งและต้องมีการอัปเดตค่าทุกครั้งที่มีการเปลี่ยนราคาในตารางคู่ค้า</p>
+    <p style="margin: 0; line-height: 1.4;">ค. การกำหนดว่าคอลัมน์ 'เบอร์โทรศัพท์' ต้องขึ้นต้นด้วย 0 และมีความยาว 10 หลักเท่านั้น พร้อมทั้งตรวจสอบว่าต้องเป็นตัวเลขทั้งหมด</p>
+    <p style="margin: 0; line-height: 1.4;">ง. การกำหนดว่า 'รหัสแผนก' ในตารางพนักงานจะต้องเป็นรหัสเดียวกับที่มีอยู่ในตารางแผนกหลักเท่านั้นเพื่อป้องกันข้อมูลกำพร้า</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    34. ลักษณะโครงสร้างของรีเลชั่นที่มีคุณสมบัติว่า 'ลำดับของแอทตริบิวต์ไม่มีความสำคัญ (Attribute Order is<br>
+    Irrelevant)' ส่งผลดีอย่างไรต่อการพัฒนาแอปพลิเคชันที่เชื่อมต่อกับฐานข้อมูล
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ทำให้การประมวลผลทูเพิล (Tuple) ทำได้เร็วขึ้นเนื่องจาก RDBMS จะจัดเรียงลำดับแอทตริบิวต์ที่ถูกเรียกใช้บ่อยไว้ด้านหน้าสุดเสมอ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ทำให้นักพัฒนาไม่ต้องกังวลเรื่องการกำหนดชนิดข้อมูล (Data Type) เนื่องจากลำดับที่เปลี่ยนไปจะช่วยปรับปรุงโครงสร้างข้อมูลให้อัตโนมัติ</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ทำให้ระบบจัดการฐานข้อมูลสามารถเพิ่มคอลัมน์ใหม่แทรกระหว่างคอลัมน์เดิมได้ตลอดเวลาโดยไม่ต้องหยุดการทำงานของเซิร์ฟเวอร์</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ทำให้นักพัฒนาสามารถเขียนคำสั่งสืบค้น (Query) โดยระบุชื่อแอทตริบิวต์ได้โดยตรง โดยไม่ต้องพึ่งพาลำดับการจัดเก็บจริงในฮาร์ดดิสก์</p>
+  </div>
+</div> 
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    35. “บริษัทประกันภัยระดับโลกต้องการออกแบบระบบฐานข้อมูลเพื่อรองรับการเคลมสินไหมทดแทน<br>
+    โดยมีเงื่อนไขว่า 'ลูกค้า (Customer)' หนึ่งคนสามารถถือ'กรมธรรม์ (Policy)' ได้หลายฉบับ<br>
+    และกรมธรรม์แต่ละฉบับอาจมี 'ผู้รับผลประโยชน์ (Beneficiary)'ได้มากกว่าหนึ่งคน ในขณะเดียวกัน<br>
+    ผู้รับผลประโยชน์หนึ่งคนอาจปรากฏชื่ออยู่ในกรมธรรม์หลายฉบับของลูกค้าคนละคนกันก็ได้<br>
+    ผู้ออกแบบตัดสินใจสร้างเอนทิตี้ 'Claim_Record' เพื่อเก็บข้อมูลการเคลมที่เกิดขึ้น<br>
+    โดยระบุว่าการเคลมแต่ละครั้งจะต้องอ้างอิงถึงทั้งลูกค้าและกรมธรรม์ที่เกี่ยวข้องเสมอ<br>
+    หากวันหนึ่งตรวจพบว่ามีการลบข้อมูลลูกค้าคนหนึ่งออกจากระบบ<br>
+    แต่รายการเคลมของลูกค้าคนนั้นยังคงค้างอยู่ในระบบโดยมียอดเงินชดเชยผิดปกติ”<br>
+    จากสถานการ์ข้างต้น ข้อใดอธิบายลักษณะความสัมพันธ์ระหว่าง 'กรมธรรม์' และ 'ผู้รับผลประโยชน์'<br>
+    ได้ถูกต้องตามหลักการE-R Model และการที่รายการเคลมยังค้างอยู่สะท้อนถึงการตั้งค่าIntegrity<br>
+    ในลักษณะใดที่ผิดพลาดต่อหลักการรักษาความสมบูรณ์ของข้อมูล
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ความสัมพันธ์เป็นแบบ Many-to-Many (M:N) และระบบละเมิดกฎ Referential Integrity เนื่องจากตั้งค่าการลบแบบSET NULL ในขณะที่ข้อมูลต้องการการตรวจสอบย้อนกลับที่เคร่งครัด</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ความสัมพันธ์เป็นแบบ One-to-One (1:1) และระบบละเมิดกฎ User-defined Integrity เพราะไม่ได้สร้างTrigger เพื่อตรวจสอบเงื่อนไขการรับเงินของผู้รับผลประโยชน์ตามที่กฎหมายกำหนด</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ความสัมพันธ์เป็นแบบ Many-to-Many (M:N) และระบบละเมิดกฎ Domain Integrity เพราะไม่ได้กำหนดขอบเขตของยอดเงินชดเชยให้สัมพันธ์กับประเภทของกรมธรรม์ที่ลูกค้าถือครอง</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ความสัมพันธ์เป็นแบบ One-to-Many (1:M) และระบบละเมิดกฎ Entity Integrity เนื่องจากคีย์หลักของตารางการเคลมยอมให้มีค่าซ้ำกันได้ส่งผลให้เกิดข้อมูลขยะในระดับกายภาพ</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    36. "ในระบบจัดการหอพัก เอนทิตี้ 'ห้องพัก (Room)' ไม่สามารถระบุตัวตนได้หากไม่มี รหัสอาคาร (Building_ID)
+    จากเอนทิตี้ อาคาร (Building) มาประกอบเป็นคีย์หลัก นอกจากนี้ห้องพักแต่ละห้องอาจจะมี รายการอุปกรณ์
+    เช่น โต๊ะ, เก้าอี้ ซึ่งในระบบระบุว่าห้องหนึ่งห้องมีอุปกรณ์ได้หลายชิ้น แต่อุปกรณ์ชิ้นนั้นจะอยู่ประจำห้องเดียวเท่านั้น
+    หากผู้ออกแบบต้องการเก็บข้อมูล อายุการใช้งานอุปกรณ์ โดยคำนวณจากปีที่ซื้อ" จากสถานการณ์นี้
+    'ห้องพัก' และ 'อายุการใช้งาน' จัดเป็นประเภทใดตามลำดับ
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Weak Entity และ Composite Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Associate Entity และ Simple Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Weak Entity และ Derived Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Strong Entity และ Multi-valued Attribute</p>
+  </div>
+</div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    37. บริษัทขายอะไหล่ยนต์มีเอนทิตี้ Order และ Product ซึ่งมีความสัมพันธ์แบบ Many-to-Many<br>
+    (M:N) เพื่อให้สามารถเก็บข้อมูลจำนวนที่สั่งและราคาขายจริง ของสินค้าแต่ละชิ้นในแต่ละออร์เดอร์ได้<br>
+    ผู้ออกแบบจึงสร้างเอนทิตี้ 'Order_Detail' ขึ้นมาเป็นตัวกลาง เอนทิตี้ 'Order_Detail' นี้เรียกว่าอะไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Recursive Entity</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Associate Entity</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Weak Entity</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Simple Entity</p>
+  </div>
+</div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    38. ในการออกแบบระบบโรงพยาบาล คนไข้ (Patient) สามารถมีเบอร์โทรศัพท์ ได้มากกว่าหนึ่งหมายเลข เช่น
+    เบอร์บ้านและเบอร์มือถือ และมีแอตทริบิวต์ ที่อยู่ ที่ประกอบด้วย บ้านเลขที่, ถนน และจังหวัด
+    แอตทริบิวต์ เบอร์โทรศัพท์ และ ที่อยู่ จัดเป็นประเภทใดตามลำดับ
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Multi-valued Attribute และ Simple Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Composite Attribute และ Derived Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Derived Attribute และ Composite Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Multi-valued Attribute และ Composite Attribute</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    39. ในบริษัทแห่งหนึ่งพนักงานและจะมีหัวหน้าซึ่งเป็นพนักงานในบริษัทเดียวกันทำหน้าที่ดูแล<br>
+    โดยหัวหน้าหนึ่งคนดูแลลูกน้องได้หลายคน แต่ลูกน้องมีหัวหน้าได้เพียงคนเดียว ความสัมพันธ์นี้เรียกว่าอะไร
+    และมีดีกรี (Degree) เท่าใด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Unary Relationship และ Degree 1</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Associative Relationship และ Degree 1</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Binary Relationship และ Degree 2</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Ternary Relationship และ Degree 3</p>
+  </div>
+</div>
 
 
-    
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    40. หากมีการกำหนดว่า โครงการ (Project) หนึ่งโครงการ สามารถมี พนักงาน ทำงานได้หลายคน<br>
+    และพนักงานหนึ่งคนสามารถรับผิดชอบได้หลายโครงการ โดยต้องเก็บข้อมูล 'บทบาทหน้าที่'<br>
+    ของพนักงานในแต่ละโครงการด้วย โครงสร้างความสัมพันธ์นี้คือแบบใด และควรจัดการอย่างไรเพื่อให้เก็บข้อมูลบทบาทได้
+  </div>
 
-    <div 
-      id="additional-questions">
-    </div>
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. One-to-Many (1:M) และควรเพิ่มคอลัมน์ในโครงการ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Many-to-Many (M:N) และควรสร้าง Associate Entity</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Many-to-Many (M:N) และควรเก็บเป็น Multi-valued Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ง. One-to-One (1:1) และควรยุบรวมตาราง</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    41. แอตทริบิวต์ 'ทักษะทางภาษา'ของพนักงาน ซึ่งพนักงานหนึ่งคนอาจพูดได้ทั้ง ไทย, อังกฤษ และจีน สอดคล้องกับคุณสมบัติใด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Simple Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Derived Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Multi-valued Attribute</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Composite Attribute</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    42. ดีกรี (Degree) ของความสัมพันธ์แบบ Ternary หมายถึงอะไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. เอนทิตี้ที่มีแอตทริบิวต์ 3 ตัว</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ความสัมพันธ์ที่มี Cardinality แบบ 1:3</p>
+    <p style="margin: 0; line-height: 1.4;">ค. เอนทิตี้หนึ่งมีความสัมพันธ์ 3 รูปแบบ</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ความสัมพันธ์ระหว่าง 3 เอนทิตี้</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    43. ในกรณีที่คุณต้องการขยายขนาดคอลัมน์ Citizen_ID ในตาราง User_Profile ให้รองรับอักขระได้<br> 20 ตัว
+    และลบคอลัมน์ Old_Phone ทิ้งในคราวเดียว คำสั่งใดคือไวยากรณ์ที่ถูกต้องที่สุด?
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ALTER TABLE User_Profile MODIFY Citizen_ID VARCHAR(20), DROP COLUMN Old_Phone</p>
+    <p style="margin: 0; line-height: 1.4;">ข. UPDATE User_Profile SET Citizen_ID = VARCHAR(20) AND DELETE Old_Phone</p>
+    <p style="margin: 0; line-height: 1.4;">ค. MODIFY TABLE User_Profile SET Citizen_ID VARCHAR(20), REMOVE Old_Phone</p>
+    <p style="margin: 0; line-height: 1.4;">ง. CREATE COLUMN Citizen_ID VARCHAR(20) FROM User_Profile DROP Old_Phone</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    44. พิจารณาคำสั่งนี้: 'DELETE FROM Employee WHERE Salary < (SELECT AVG(Salary) FROM Employee WHERE Dept_ID = 10);'<br>
+    หากมีการรันคำสั่งนี้จะเกิดผลลัพธ์อย่างไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ลบข้อมูลในแผนกที่ 10 ทิ้งทั้งหมด</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ลบพนักงานทุกคนที่มีเงินเดือนน้อยกว่าค่าเฉลี่ยของแผนกที่ 10</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ลบพนักงานเฉพาะที่อยู่ในแผนกที่ 10 เท่านั้น</p>
+    <p style="margin: 0; line-height: 1.4;">ง. เกิด Error เนื่องจากไม่สามารถใช้ SELECT ภายในคำสั่ง DELETE ได้</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    45. ผู้ดูแลระบบเริ่มต้นด้วยการสร้างตารางเพื่อเก็บข้อมูลพนักงาน โดยมีเพียงรหัสและชื่อเท่านั้น<br>
+    ต่อมาพบว่าจำเป็นต้องเก็บข้อมูลแผนกเพิ่ม แต่ไม่ต้องการให้ข้อมูลเดิมสูญหาย จึงดำเนินการดังนี้<br>
+    CREATE TABLE employee ( employee_id INT, employee_name VARCHAR(50) );<br>
+    ALTER TABLE employee ADD department_name VARCHAR(50);<br>
+    INSERT INTO employee (employee_id, employee_name) VALUES (1, 'Somchai');<br>
+    เมื่อพิจารณาข้อมูลแถวที่ถูกเพิ่มเข้าไป ข้อใดอธิบายค่าของคอลัมน์ department_name ได้ถูกต้องที่สุด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. มีค่าเป็นชื่อแผนกเริ่มต้น</p>
+    <p style="margin: 0; line-height: 1.4;">ข. มีค่าเป็นศูนย์</p>
+    <p style="margin: 0; line-height: 1.4;">ค. มีค่าเป็นค่าว่าง (NULL)</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ไม่สามารถเพิ่มข้อมูลได้</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    46. ต้องการค้นหาข้อมูลสินค้าที่มีคำว่า “Note” คำสั่งใดสอดคล้องกับเงื่อนไขนี้<br>
+    SELECT * FROM product WHERE product_name LIKE 'Note%';
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ค้นหาชื่อที่มี Note อยู่ท้ายคำ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ค้นหาชื่อที่มี Note อยู่ทุกตำแหน่ง</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ค้นหาชื่อที่ตรงกับ Note เท่านั้น</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ค้นหาชื่อที่ขึ้นต้นด้วย Note</p>
+  </div>
+</div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    47. สถาบันการศึกษาแห่งหนึ่งเริ่มพัฒนาระบบทะเบียนนักศึกษาโดยในช่วงเริ่มต้น
+    ระบบถูกออกแบบอย่างเรียบง่าย มีการจัดเก็บเพียงรหัสนักศึกษาและชื่อนักศึกษาเท่านั้น
+    ระบบดังกล่าวถูกนำไปใช้งานจริงเป็นระยะเวลาหลายปี มีการเพิ่มข้อมูลนักศึกษาใหม่อย่างต่อเนื่องทุกภาคการศึกษา
+    ข้อมูลที่จัดเก็บถูกนำไปใช้อ้างอิงในรายงานหลายประเภท เช่น รายงานจำนวนนักศึกษา
+    รายงานสรุปผลการลงทะเบียน ต่อมาฝ่ายบริหารมีนโยบายให้เพิ่มข้อมูลคณะของนักศึกษา โดยมีข้อกำหนดสำคัญว่าต้องไม่ลบข้อมูลเดิมที่มีอยู่
+    ต้องไม่กระทบรายงานที่เคยสร้างไว้ก่อนหน้า ต้องสามารถเพิ่มข้อมูลนักศึกษาใหม่ได้ตามปกติ
+    และต้องไม่ทำให้การดูแลระบบมีความซับซ้อนมากขึ้น ผู้ดูแลระบบจึงพิจารณาการปรับโครงสร้างของตารางเดิม
+    โดยเน้นให้โครงสร้างใหม่สามารถอยู่ร่วมกับข้อมูลเดิมได้ เมื่อพิจารณาผลกระทบเชิงแนวคิดของการปรับโครงสร้างดังกล่าว
+    ข้อใดอธิบายสถานะของข้อมูลนักศึกษาที่มีอยู่ก่อนหน้าได้ถูกต้องที่สุด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ข้อมูลเดิมจะยังคงอยู่ครบ แต่ข้อมูลส่วนที่เพิ่มใหม่จะยังไม่มีค่า</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ข้อมูลเดิมจะถูกกำหนดค่าใหม่ให้ครบถ้วนโดยอัตโนมัติ</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ข้อมูลเดิมบางส่วนจะถูกลบเพื่อให้สอดคล้องกับโครงสร้างใหม่</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ตารางเดิมจะไม่สามารถใช้งานร่วมกับข้อมูลที่มีอยู่ได้อีก</p>
+  </div>
+</div>
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    48. องค์กรธุรกิจแห่งหนึ่งมีระบบฐานข้อมูลที่ถูกพัฒนามาเป็นเวลานาน ในช่วงเริ่มต้นโครงการ มีการออกแบบตารางจำนวนมาก
+    เพื่อรองรับการทำงานที่คาดว่าจะเกิดขึ้นในอนาคต เมื่อเวลาผ่านไปหลายปี ผู้ดูแลระบบทำการตรวจสอบโครงสร้างฐานข้อมูล
+    พบว่ามีตารางบางตารางไม่เคยถูกใช้งานจริง ไม่มีการเพิ่มข้อมูลใหม่ ไม่มีรายงานใดอ้างอิงถึงตารางเหล่านั้น
+    และไม่มีตารางอื่นในระบบที่มีความสัมพันธ์กับตารางดังกล่าว เพื่อให้โครงสร้างฐานข้อมูลมีความเป็นระเบียบ
+    และลดภาระในการดูแลรักษา ผู้ดูแลระบบจึงตัดสินใจนำตารางที่ไม่จำเป็นออกจากระบบ เมื่อพิจารณาผลกระทบเชิงโครงสร้าง
+    ของการดำเนินการนี้ ข้อใดอธิบายผลที่เกิดขึ้นกับฐานข้อมูลได้ถูกต้องที่สุด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. เฉพาะข้อมูลในตารางจะถูกลบ แต่โครงสร้างตารางยังคงอยู่</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ทั้งโครงสร้างและข้อมูลของตารางจะถูกลบออกจากระบบ</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ตารางจะถูกซ่อนและไม่แสดงผล แต่ยังสามารถเรียกใช้ได้</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ตารางจะถูกลบเฉพาะบางคอลัมน์ที่ไม่ถูกใช้งาน</p>
+  </div>
+</div>
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    49. นักวิเคราะห์ข้อมูลได้รับมอบหมายให้จัดทำรายงานรายชื่อลูกค้าโดยมีเงื่อนไขว่าต้องการเฉพาะลูกค้าที่มีชื่อบริษัท
+    ซึ่งมีคำบางคำปรากฏอยู่ภายในชื่อไม่จำเป็นต้องอยู่ตำแหน่งต้นหรือท้าย รายงานดังกล่าวถูกนำไปใช้เพื่อวิเคราะห์พฤติกรรมทางการตลาด
+    ผู้จัดทำรายงานต้องมั่นใจว่า จะไม่ตัดข้อมูลลูกค้าที่ตรงตามเงื่อนไขออกไปโดยไม่ได้ตั้งใจ และจะไม่รวมข้อมูลลูกค้าที่ไม่เกี่ยวข้องเข้ามา
+    เมื่อพิจารณาแนวคิดของการค้นหาข้อมูลลักษณะนี้ ข้อใดอธิบายลักษณะของข้อมูลที่ควรถูกเลือกมาแสดงได้ถูกต้องที่สุด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. เลือกเฉพาะข้อมูลที่ชื่อบริษัทตรงกับคำค้นหาแบบสมณ์</p>
+    <p style="margin: 0; line-height: 1.4;">ข. เลือกข้อมูลที่ชื่อบริษัทขึ้นต้นด้วยคำค้นหาเท่านั้น</p>
+    <p style="margin: 0; line-height: 1.4;">ค. เลือกข้อมูลที่ชื่อบริษัทมีคำค้นหาอยู่ในตำแหน่งใดก็ได้</p>
+    <p style="margin: 0; line-height: 1.4;">ง. เลือกข้อมูลที่ชื่อบริษัทลงท้ายด้วยคำค้นหาเท่านั้น</p>
+  </div>
+</div>
+  
+  
+  
+  <div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    50. หากคุณต้องการสร้าง Volume ชื่อ 'portainer_data' เพื่อเตรียมไว้สำหรับเก็บข้อมูลของ Portainer
+    ต้องใช้คำสั่งใด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. docker add volume portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ข. docker run -v portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ค. docker create volume portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ง. docker volume create portainer_data</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    51. คำสั่งเต็มข้อใดคือการสร้าง Portainer CE ที่ถูกต้องที่สุด<br>
+    (เข้าใช้งานผ่านพอร์ต 9443 และเก็บข้อมูลใน portainer_data)
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. docker run -d -p 9443:9443 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest</p>
+    <p style="margin: 0; line-height: 1.4;">ข. docker run portainer-ce --port 9443</p>
+    <p style="margin: 0; line-height: 1.4;">ค. docker start portainer -p 9443:9443</p>
+    <p style="margin: 0; line-height: 1.4;">ง. docker build portainer/portainer-ce -v /data</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    52. หากต้องการตรวจสอบพอร์ต (Port) ที่ Portainer ใช้งานอยู่ในขณะนี้ผ่าน CLI ต้องใช้คำสั่งใด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. netstat -portainer</p>
+    <p style="margin: 0; line-height: 1.4;">ข. docker ps</p>
+    <p style="margin: 0; line-height: 1.4;">ค. docker port-list</p>
+    <p style="margin: 0; line-height: 1.4;">ง. docker network show</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    53. คำสั่งใดใช้สำหรับลบ Volume ที่ชื่อ 'portainer_data' ทิ้งอย่างถาวร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. docker remove portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ข. docker delete volume portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ค. docker volume rm portainer_data</p>
+    <p style="margin: 0; line-height: 1.4;">ง. docker system prune –data</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    54. React ถูกนิยามว่าเป็นเครื่องมือประเภทใด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. โปรแกรมสำหรับออกแบบกราฟิกและ UI</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ภาษาโปรแกรมมิ่งระดับสูงตัวใหม่</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ระบบจัดการฐานข้อมูลเชิงสัมพันธ์ (RDBMS)</p>
+    <p style="margin: 0; line-height: 1.4;">ง. JavaScript Library สำหรับสร้าง User Interface</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    55. แนวคิด 'Component-based' ใน React มีประโยชน์หลักอย่างไรตามเอกสาร?
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. แบ่ง UI เป็นส่วนย่อยๆ ที่สามารถนำกลับมาใช้ซ้ำได้</p>
+    <p style="margin: 0; line-height: 1.4;">ข. ทำให้เบราว์เซอร์ไม่ต้องใช้ JavaScript ในการประมวลผล</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ช่วยให้เว็บไซต์โหลดข้อมูลจาก Database ได้โดยตรง</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ใช้สำหรับแปลงโค้ด Java ให้เป็น JavaScript</p>
+  </div>
+</div>
+
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    56. JSX คืออะไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. ระบบจัดการ State รูปแบบใหม่</p>
+    <p style="margin: 0; line-height: 1.4;">ข. รูปแบบการเขียน HTML ผสมใน JavaScript</p>
+    <p style="margin: 0; line-height: 1.4;">ค. ตัวแปลภาษาจาก JavaScript เป็น C++</p>
+    <p style="margin: 0; line-height: 1.4;">ง. ชื่อไลบรารีสำหรับจัดการ CSS</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    57. React Hooks ตัวใดที่ใช้สำหรับจัดการ Side Effects เช่น การดึงข้อมูลจาก Server
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. useState</p>
+    <p style="margin: 0; line-height: 1.4;">ข. useData</p>
+    <p style="margin: 0; line-height: 1.4;">ค. useEffect</p>
+    <p style="margin: 0; line-height: 1.4;">ง. useAPI</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    58. JSX ย่อมาจากอะไร
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. JavaScript Syntax Xtension</p>
+    <p style="margin: 0; line-height: 1.4;">ข. JavaScript Structured XML</p>
+    <p style="margin: 0; line-height: 1.4;">ค. JavaScript Xecutable XML</p>
+    <p style="margin: 0; line-height: 1.4;">ง. JavaScript XML</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    59. ลักษณะใดต่อไปนี้ทำให้ JSX “ดูคล้าย” ภาษา HTML มากที่สุด
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. การใช้โครงสร้างแท็กในการเขียนหน้าจอ</p>
+    <p style="margin: 0; line-height: 1.4;">ข. การใช้ตัวแปรร่วมกับเครื่องหมายพิเศษ</p>
+    <p style="margin: 0; line-height: 1.4;">ค. การใช้คำสั่งเงื่อนไขแบบ if และ else</p>
+    <p style="margin: 0; line-height: 1.4;">ง. การใช้ฟังก์ชันแบบลูกศร</p>
+  </div>
+</div>
+
+<div class="q-card" style="margin-bottom: 30px; padding: 25px; border-radius: 15px; background: #fff; shadow: var(--shadow);">
+  <div style="font-size:1.3rem; font-weight:bold; line-height: 1.6; margin-bottom: 20px; color: var(--primary);">
+    60. ในหน้าจอ phpMyAdmin เมื่อเราพิมพ์คำสั่ง SELECT เสร็จแล้ว<br>
+    ต้องกดปุ่มใดที่มุมล่างขวาเพื่อให้คำสั่งทำงาน
+  </div>
+
+  <div class="options-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <p style="margin: 0; line-height: 1.4;">ก. Save</p>
+    <p style="margin: 0; line-height: 1.4;">ข. Go</p>
+    <p style="margin: 0; line-height: 1.4;">ค. Run</p>
+    <p style="margin: 0; line-height: 1.4;">ง. Submit</p>
+  </div>
+</div>
+
+  
   </div>
 
 
   <div class="sidebar">
       <h3 style="text-align:center;">กระดาษคำตอบ</h3>
-      <div id="answer-sheet-container"></div> <button class="btn-login" style="width:100%;" onclick="submitExam(false)">ส่งข้อสอบ</button>
+      <div id="answer-sheet-container"></div> 
+      
     </div>
   </div>
 </div>
@@ -1066,7 +1023,7 @@ React Hook ตัวใดที่ออกแบบมาเพื่อจั
 <script>
   const sheetContainer = document.getElementById('answer-sheet-container');
 if (sheetContainer) {
-  for (let i = 1; i <= 50; i++) { // แก้ตรงนี้
+  for (let i = 1; i <= 60; i++) { // แก้ตรงนี้
     const row = document.createElement('div');
       row.className = 'ans-row';
       row.innerHTML = `

@@ -64,7 +64,7 @@ body {
 .q-card::before {
   content: ""; position: absolute; top: 0; right: 0;
   width: 100px; height: 100px;
-  background: linear-gradient(135deg, transparent 80%, rgba(0,176,255,0.1) 0%);
+  background: linear-gradient(135deg, transparent 80%, rgb(255, 255, 255) 0%);
 }
 
 .q-card div { color: var(--primary); margin-bottom: 20px; }
