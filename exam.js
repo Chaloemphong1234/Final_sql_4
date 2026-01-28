@@ -25,7 +25,7 @@ let alert5Shown  = false;
 let alert1Shown  = false;
 
 
-const EXAM_START_TIME = new Date(2026, 0, 28, 17, 0, 0);
+const EXAM_START_TIME = new Date(2026, 0, 28, 17, 30, 0);
 const LATE_LIMIT_MINUTES = 10;
 
 
