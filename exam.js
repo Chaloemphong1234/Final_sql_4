@@ -7,10 +7,10 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBxub0pQNzcvBcknMDK
 
 // เฉลย 60 ข้อ (สลับใหม่เรียบร้อย)
 const correctAnswers = {
-  1: "ก", 2: "ข", 3: "ก", 4: "ง", 5: "ง", 6: "ข", 7: "ค", 8: "ก", 9: "ข", 10: "ง",
-  11: "ก", 12: "ค", 13: "ข", 14: "ก", 15: "ง", 16: "ข", 17: "ค", 18: "ก", 19: "ข", 20: "ง",
-  21: "ก", 22: "ค", 23: "ก", 24: "ข", 25: "ง", 26: "ข", 27: "ก", 28: "ค", 29: "ข", 30: "ง",
-  31: "ก", 32: "ข", 33: "ค", 34: "ง", 35: "ก", 36: "ค", 37: "ข", 38: "ง", 39: "ก", 40: "ข",
+  1: "ค", 2: "ก", 3: "ข", 4: "ง", 5: "ข", 6: "ข", 7: "ค", 8: "ง", 9: "ข", 10: "ค",
+  11: "ก", 12: "ง", 13: "ง", 14: "ค", 15: "ข", 16: "ง", 17: "ค", 18: "ค", 19: "ข", 20: "ข",
+  21: "ข", 22: "ค", 23: "ก", 24: "ข", 25: "ก", 26: "ข", 27: "ก", 28: "ค", 29: "ก", 30: "ก",
+  31: "ก", 32: "ข", 33: "ง", 34: "ข", 35: "ค", 36: "ค", 37: "ง", 38: "ก", 39: "ข", 40: "ข",
   41: "ค", 42: "ง", 43: "ก", 44: "ข", 45: "ค", 46: "ง", 47: "ก", 48: "ข", 49: "ค", 50: "ง",
   51: "ก", 52: "ข", 53: "ค", 54: "ง", 55: "ก", 56: "ข", 57: "ค", 58: "ง", 59: "ก", 60: "ข"
 };
@@ -20,9 +20,14 @@ const PASS_SCORE = 30;
 let timeLeft = 90 * 60;    
 let timerInterval;
 let alert30Shown = false;  
+let alert10Shown = false;
+let alert5Shown  = false;
+let alert1Shown  = false;
 
 
-const EXAM_START_TIME = new Date(2026, 0, 27, 18, 0, 0);
+const EXAM_START_TIME = new Date(2026, 0, 28, 17, 0, 0);
+const LATE_LIMIT_MINUTES = 10;
+
 
 /* ================== CUSTOM POPUP SYSTEM ================== */
 function showModal(title, message, icon = '⚠️', callback = null) {
@@ -123,71 +128,120 @@ if(location.pathname.includes("exam.html")){
 
 function checkExamTimeStatus() {
   const examContainer = document.getElementById("examContainer");
+
   const timerLoop = setInterval(() => {
     const now = new Date();
+
+    // ====== ยังไม่ถึงเวลาเริ่มสอบ ======
     if (now < EXAM_START_TIME) {
-      if(examContainer) examContainer.style.display = "none";
+      if (examContainer) examContainer.style.display = "none";
+
       if (!document.getElementById("waitMessage")) {
         const waitHTML = `
           <div id="waitMessage" style="text-align:center; margin-top:100px; padding:40px;">
             <div style="font-size: 5rem; margin-bottom: 20px;">⏳</div>
             <h2 style="color:#f39c12; font-size: 2rem;">ยังไม่ถึงเวลาเริ่มการทดสอบ</h2>
-            <div id="countdownDisplay" style="font-weight:bold; font-size:2.5rem; color:#2c3e50; margin-top:20px;"></div>
+            <div id="countdownDisplay"
+                 style="font-weight:bold; font-size:2.5rem; color:#2c3e50; margin-top:20px;">
+            </div>
           </div>`;
         document.body.insertAdjacentHTML('beforeend', waitHTML);
       }
+
       const diff = EXAM_START_TIME - now;
       const mins = Math.floor(diff / 60000);
       const secs = Math.floor((diff % 60000) / 1000);
       const countdown = document.getElementById("countdownDisplay");
-      if(countdown) countdown.innerText = `เริ่มสอบในอีก ${mins} นาที ${secs} วินาที`;
-    } else {
-      clearInterval(timerLoop);
-      const wm = document.getElementById("waitMessage");
-      if(wm) wm.remove();
-      if(examContainer) {
-        examContainer.style.display = "flex";
-        startTimer(); // ถึงเวลาเริ่มสอบแล้ว ค่อยเริ่มตัวนับเวลา 90 นาที
+      if (countdown) {
+        countdown.innerText = `เริ่มสอบในอีก ${mins} นาที ${secs} วินาที`;
       }
+      return;
+    }
+
+    // ====== ถึงเวลาแล้ว : ตรวจสอบมาสาย ======
+    const lateMinutes = Math.floor((now - EXAM_START_TIME) / 60000);
+
+    // ❌ มาสายเกิน 15 นาที
+    if (lateMinutes > LATE_LIMIT_MINUTES) {
+      clearInterval(timerLoop);
+
+      if (examContainer) examContainer.style.display = "none";
+      const wm = document.getElementById("waitMessage");
+      if (wm) wm.remove();
+
+      document.body.insertAdjacentHTML("beforeend", `
+        <div style="text-align:center; margin-top:120px;">
+          <div style="font-size:5rem;">❌</div>
+          <h2 style="color:#c0392b;">นักศึกษาไม่มาสอบตามเวลาที่กำหนด</h2>
+          <p style="font-size:1.4rem;">
+            มาสาย <b>${lateMinutes}</b> นาที<br>
+            เกินเวลาที่อนุญาต ${LATE_LIMIT_MINUTES} นาที
+          </p>
+          <h3 style="color:#555;">หมดสิทธิ์เข้าสอบ</h3>
+        </div>
+      `);
+      return;
+    }
+
+    // ✅ มาสายแต่ยังอยู่ในเวลาที่อนุญาต (≤ 15 นาที)
+    clearInterval(timerLoop);
+
+    const wm = document.getElementById("waitMessage");
+    if (wm) wm.remove();
+
+    if (examContainer) {
+      examContainer.style.display = "flex";
+
+      // ====== หักเวลาที่มาช้าออกจากเวลาสอบ ======
+      const EXAM_DURATION_MINUTES = 90;
+      timeLeft = (EXAM_DURATION_MINUTES * 60) - (lateMinutes * 60);
+
+      if (timeLeft < 0) timeLeft = 0;
+
+      startTimer(); // ใช้ระบบจับเวลาเดิมทั้งหมด
+    }
+
+  }, 1000);
+}
+
+
+
+function startTimer(){
+  updateTimer();
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+
+    if (timeLeft === 1800 && !alert30Shown) {
+      alert30Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 30 นาที กรุณาตรวจสอบคำตอบ", "⏰");
+    }
+
+    if (timeLeft === 600 && !alert10Shown) {
+      alert10Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 10 นาที กรุณาตรวจสอบคำตอบ", "⏰");
+    }
+
+    if (timeLeft === 300 && !alert5Shown) {
+      alert5Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 5 นาที กรุณาตรวจสอบคำตอบ", "⏰");
+    }
+
+    if (timeLeft === 60 && !alert1Shown) {
+      alert1Shown = true;
+      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 1 นาที กรุณาตรวจสอบคำตอบ", "⏰");
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitExam(true); // หมดเวลา -> ส่งอัตโนมัติ
     }
   }, 1000);
 }
 
 
 
-/* ================== TIMER SYSTEM ================== */
-function startTimer(){
-  updateTimer()
-  timerInterval = setInterval(()=>{
-    timeLeft--
-    updateTimer()
-
-    // แจ้งเตือนเมื่อเหลือ 30 นาที (1800 วินาที)
-    if (timeLeft === 1800 && !alert30Shown) {
-      alert30Shown = true;
-      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 30 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
-    }
-
-    if (timeLeft === 600 && !alert30Shown) {
-      alert30Shown = true;
-      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 10 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
-    }
-
-    if (timeLeft === 300 && !alert30Shown) {
-      alert30Shown = true;
-      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 5 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
-    }
-    if (timeLeft === 60 && !alert30Shown) {
-      alert30Shown = true;
-      showModal("แจ้งเตือนเวลา", "เหลือเวลาอีก 1 นาที กรุณาตรวจสอบคำตอบและทำให้ครบ", "⏰");
-    }
-
-    if(timeLeft <= 0){
-      clearInterval(timerInterval)
-      submitExam(true) // หมดเวลา -> เก็บกระดาษคำตอบอัตโนมัติ
-    }
-  },1000)
-}
 
 function updateTimer(){
   let m = Math.floor(timeLeft/60)

@@ -2,27 +2,117 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<title>กำลังบันทึกคำตอบ</title>
 <link rel="stylesheet" href="style.css">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Sarabun', sans-serif;
+    background: #fff8f1; /* ส้มอ่อนสุภาพ */
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .card {
+    background: #ffffff;
+    width: 480px;
+    padding: 50px 45px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(230, 81, 0, 0.25);
+    border-top: 12px solid var(--secondary);
+  }
+
+  h2 {
+    color: var(--primary);
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+  }
+
+  p {
+    color: #5d4037;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* Loader */
+  .loader-luxury {
+    width: 90px;
+    height: 90px;
+    border: 5px solid #ffe0b2;
+    border-top: 5px solid var(--secondary);
+    border-radius: 50%;
+    animation: spin 1.4s linear infinite;
+    margin: 0 auto 25px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Progress bar */
+  .progress-container {
+    width: 100%;
+    background: #fff3e0;
+    height: 8px;
+    border-radius: 10px;
+    margin-top: 25px;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffb74d, #e65100);
+    transition: width 30s linear;
+  }
+
+  .footer-text {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #8d6e63;
+  }
+</style>
 </head>
-<body style="background: var(--primary);">
+
+<body>
 <div class="center">
-  <div class="card" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.3); backdrop-filter: blur(15px);">
+  <div class="card">
     <div class="loader-luxury"></div>
-    <h2 style="color:var(--accent); letter-spacing: 2px;">ระบบกำลังเก็บกระดาษคำตอบ</h2>
-    <p style="color: #d7ccc8;">กรุณารอสักครู่ ระบบกำลังตรวจสอบความถูกต้องของคำตอบและบันทึกผลสอบ...</p>
-    <div style="width: 100%; background: rgba(255,255,255,0.1); height: 5px; border-radius: 10px; margin-top: 20px; overflow: hidden;">
-      <div id="progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 30s linear;"></div>
+
+    <h2>ระบบกำลังเก็บกระดาษคำตอบ</h2>
+
+    <p>
+      กรุณารอสักครู่  
+      ระบบกำลังตรวจสอบความถูกต้อง<br>ของคำตอบ  
+      และบันทึกผลการสอบ
+    </p>
+
+    <div class="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+
+    <div class="footer-text">
+      กรุณาอย่าปิดหน้าต่างหรือรีเฟรชหน้านี้
     </div>
   </div>
 </div>
 
 <script>
-  // เริ่มวิ่ง Progress Bar
+  // เริ่ม progress bar
   setTimeout(() => {
     document.getElementById('progress-bar').style.width = '100%';
   }, 100);
 
-  // ไปหน้าผลสอบหลังจาก 30 วินาที
+  // ไปหน้าผลสอบ
   setTimeout(() => {
     location.href = 'result.html';
   }, 30000);
